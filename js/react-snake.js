@@ -2,8 +2,9 @@ var snake = function () {
 
 	var SnakeTableCell = React.createClass({
 		render: function() {
+			let className = (this.props.cellOccupied) ? "snake-table-cell occupy-cell" :  "snake-table-cell" 
       return (
-      	<span className="snake-table-cell">	
+      	<span className={className} >	
       	</span>
       );
     }
@@ -11,23 +12,35 @@ var snake = function () {
 
 	var SnakeTable = React.createClass({
 	  render: function() {
-	  	let row = this.props.row || 10;
-	  	let col = this.props.col || 10;
+	  	let row = this.props.controlObj.row || 10;
+	  	let col = this.props.controlObj.col || 20;
+
+	  	let snake = this.props.controlObj.snake || {};
 
       var table = [];
-      var tr = [];
+      let tr = [];
 
-			for (let i=0; i < col; i++) {
-			  tr.push(<td><SnakeTableCell/></td>);
-			}
+      let index = -1;
+      console.error(snake.body);
 
 			for (let i=0; i < row; i++) {
-			  table.push(<tr><td>{tr}</td></tr>);
+				let tr = [];				
+				for (let j=0; j < col; j++) {
+					index++;					
+					if (snake.body && snake.body[index] === 1){
+						tr.push(<td><SnakeTableCell cellOccupied={true} /></td>);
+					}else{
+						tr.push(<td><SnakeTableCell cellOccupied={false} /></td>);
+					}				  
+				}				
+			  table.push(<tr>{tr}</tr>);
 			}			
 
       return (
-      	<table>      	
-        	{table}
+      	<table>   
+      		<tbody>     	
+        		{table}
+        	</tbody>
       	</table>
       );
     }
@@ -37,10 +50,10 @@ var snake = function () {
 	  render: function() {
       return (
       	<div>   
-  				<input type="radio" className="" name="gender" value="Low" onClick={this.props.gameControl({"speed":0})}/> Low
-  				<input type="radio" className="" name="gender" value="Mid" onClick={this.props.gameControl({"speed":1})}/> Mid
-  				<input type="radio" className="" name="gender" value="Hig" onClick={this.props.gameControl({"speed":2})}/> Hig
-      		<button type="button" className="" onClick={this.props.gameControl({"speed":0})}>Start Game</button>
+  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.gameControl("speed",0)}/> Low
+  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.gameControl("speed",1)}/> Mid
+  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.gameControl("speed",2)}/> Hig
+      		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
       	</div>
       );
     }
@@ -49,25 +62,85 @@ var snake = function () {
 	var SnakeGame = React.createClass({
 		getInitialState: function() {
       return {
-        palse: true,
-        col:20,
-        row:10,
-        speed: ''
+      	controlObj : {
+          palse: true,
+          intervalId: 0,
+	        col:20,
+	        row:10,
+	        speed: 0,
+	        direction:0,
+	        snake:{
+	        	queue: [1,2],
+	        	body: {
+	        		1 : 1,
+	        		2 : 1
+	        	}
+	        }
+
+      	}
       }
     },
-    gameControl:function(obj){
-    	console.error("test");
+		handleKeyDown(event){
+	    //right
+	    if(event.keyCode == 39){
+	      this.snakeDirection(0);
+	    }
+	    //down
+	    else if(event.keyCode == 40){
+	    	this.snakeDirection(1);
+	    }
+	    //left
+	    else if(event.keyCode == 37){
+	    	this.snakeDirection(2);
+	    }
+	    //up
+	   	else if(event.keyCode == 38){
+	   		this.snakeDirection(3);
+	    }
+		},
+		componentWillMount() {
+			console.error("componentWillMount");
+	    window.addEventListener('keydown', this.handleKeyDown);
+	  },
+	  componentWillUnmount() {
+	    window.removeEventListener('keydown', this.handleKeyDown);
+	  },	
+    gameControl:function(key, value){
+    	let controlObj = this.state.controlObj;
+    	controlObj[key] = value;
+    	this.setState({"controlObj": controlObj});    	
+    },
+    snakeDirection(direction){ 
+    	curr_dirtion = this.state.controlObj.direction;
+    	if(curr_dirtion !== direction && Math.abs(direction - curr_dirtion) % 2 === 1 ){
+    		console.error(direction);
+    	}  	
+    },
+    snakeMoving(){   	
+    	console.error("start");
+    },
+    startGame:function(){
+
+    	if(this.state.controlObj.palse){
+    		let intervalId = setInterval(this.snakeMoving, 1000);
+    		this.gameControl("intervalId", intervalId);
+    		this.gameControl("palse", false);
+    	}else{
+    		clearInterval(this.state.controlObj.intervalId);
+    		this.gameControl("palse", true);
+    	}
+    	
     },
 	  render: function() {
       return (
 			  <div>
 			    <SnakeTable 
-			    	row={this.state.row} 
-			    	col={this.state.col}
-			    	speed={this.state.speed}/>
+			    	controlObj={this.state.controlObj}
+			    	gameControl={this.gameControl}/>
 
 			    <ControlPanel
-			    	gameControl={this.gameControl}/>
+			    	gameControl={this.gameControl}
+			    	startGame={this.startGame}/>
 			  </div>
       );
     }
