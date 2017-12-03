@@ -72,10 +72,10 @@ var snake = function () {
 	  render: function() {
       return (
       	<div>   
-  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.updateStates("speed",700)}/> Low <br/>
-  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.updateStates("speed",500)}/> Mid <br/>
-  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.updateStates("speed",200)}/> Hig <br/>
-  				<input type="radio" className="" name="gender" value="God" onClick={() => this.props.updateStates("speed",50)}/> God Like <br/>
+  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.updateStates("speed",380)}/> Flash <br/>
+  				<input type="radio" className="" name="gender" value="Mid" defaultChecked={true} onClick={() => this.props.updateStates("speed",230)}/> Average Joe <br/>
+  				<input type="radio" className="" name="gender" value="God" onClick={() => this.props.updateStates("speed",135)}/> Fast and Furious <br/>
+  				<input type="radio" className="" name="gender" value="God" onClick={() => this.props.updateStates("speed",75)}/> Shining Finger!!! <br/>
       		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
       	</div>
       );
@@ -90,7 +90,7 @@ var snake = function () {
           intervalId: 0,
 	        col:20,
 	        row:10,
-	        speed: 1000,
+	        speed: 250,
 	        direction:0,	        
 	        snake:{
 	        	col: 2,
