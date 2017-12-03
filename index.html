@@ -85,6 +85,8 @@ var snake = function () {
 	        speed: 1000,
 	        direction:0,
 	        snake:{
+	        	col: 2,
+	        	row: 0,
 	        	head: 2,
 	        	queue: [1,2],
 	        	body: {
@@ -132,6 +134,20 @@ var snake = function () {
     		this.gameControl("direction", direction);
     	}  	
     },
+    lose(){ 
+			clearInterval(this.state.controlObj.intervalId);
+    	this.gameControl("palse", true);
+    	alert("you lose");
+    },
+    checker(snake){ 
+    	let col = this.state.controlObj.col;
+    	let row = this.state.controlObj.row;
+    	if(snake.col >= col || snake.row >= row || snake.col < 0 || snake.row < 0 ){
+    		return 0;
+    	}
+
+    	return 1;    	
+    },
     snakeMoving(){   
     	let direction = this.state.controlObj.direction;
     	let snake = this.state.controlObj.snake;
@@ -139,24 +155,34 @@ var snake = function () {
 	  	
     	if(direction === 0){
     		snake.head = snake.head + 1;
+    		snake.col++;
 
     	}else if(direction === 1){
-    		snake.head = snake.head + col;   	
+    		snake.head = snake.head + col;  
+    		snake.row++; 	
 
     	}else if(direction === 2){
     		snake.head = snake.head - 1;
+    		snake.col--;
 
     	}else if(direction === 3){
     		snake.head = snake.head - col;
+    		snake.row--;
     	}
     	snake.queue.push(snake.head)
-    	let tail = snake.queue[0];
-    	console.error(snake.queue);
-    	snake.queue.shift();
     	snake.body[snake.head] = 1;
-    	snake.body[tail] = 0;
+    	if(this.checker(snake) === 0){
+    		this.lose();
+    	}else{
+      	this.checker(snake);
+	    	let tail = snake.queue[0];
+	    	snake.queue.shift();
+	    	snake.body[tail] = 0;   	
 
-    	this.gameControl("snake", snake);	
+	    	this.gameControl("snake", snake);
+
+    	}
+
     },
     startGame:function(){
 
