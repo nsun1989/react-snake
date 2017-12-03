@@ -38,11 +38,16 @@ var snake = function () {
       let index = -1;
       console.error(snake.body);
 
+      let emptySpace = {
+      	queue: [],
+      	lookup: {},
+    	};
+
 			for (let i=0; i < row; i++) {
 				let tr = [];				
 				for (let j=0; j < col; j++) {
 					index++;					
-					if (snake.body && snake.body[index] === 1){
+					if (snake.body && snake.body[index] === 1 || snake.item === index){
 						tr.push(<td><SnakeTableCell cellOccupied={true} /></td>);
 					}else{
 						tr.push(<td><SnakeTableCell cellOccupied={false} /></td>);
@@ -65,9 +70,10 @@ var snake = function () {
 	  render: function() {
       return (
       	<div>   
-  				<input type="radio" className="" checked={true} name="gender" value="Low" onClick={() => this.props.gameControl("speed",1000)}/> Low
-  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.gameControl("speed",750)}/> Mid
-  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.gameControl("speed",500)}/> Hig
+  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.updateStates("speed",700)}/> Low <br/>
+  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.updateStates("speed",500)}/> Mid <br/>
+  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.updateStates("speed",200)}/> Hig <br/>
+  				<input type="radio" className="" name="gender" value="God" onClick={() => this.props.updateStates("speed",50)}/> God Like <br/>
       		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
       	</div>
       );
@@ -83,7 +89,7 @@ var snake = function () {
 	        col:20,
 	        row:10,
 	        speed: 1000,
-	        direction:0,
+	        direction:0,	        
 	        snake:{
 	        	col: 2,
 	        	row: 0,
@@ -92,7 +98,8 @@ var snake = function () {
 	        	body: {
 	        		1 : 1,
 	        		2 : 1
-	        	}
+	        	},
+	        	item: -1,
 	        }
 
       	}
@@ -123,20 +130,41 @@ var snake = function () {
 	  componentWillUnmount() {
 	    window.removeEventListener('keydown', this.handleKeyDown);
 	  },	
-    gameControl(key, value){
+    updateStates(key, value){
     	let controlObj = this.state.controlObj;
     	controlObj[key] = value;
     	this.setState({"controlObj": controlObj});    	
     },
+    createItem(){
+    	let col = this.state.controlObj.col;
+    	let row = this.state.controlObj.row;
+    	let snake = this.state.controlObj.snake;
+      let emptySpace = [];
+
+    	let index = -1;
+
+			for (let i=0; i < row; i++) {							
+				for (let j=0; j < col; j++) {
+					index++;					
+					if (snake.body && snake.body[index] !== 1){						
+						emptySpace.push(index);
+					}				  
+				}	
+			  
+			}	
+			snake.item = Math.floor(Math.random() * (emptySpace.length));
+			this.updateStates("snake", snake);
+
+  	},
     snakeDirection(direction){ 
     	let curr_direction = this.state.controlObj.direction;
     	if(curr_direction !== direction && Math.abs(direction - curr_direction) % 2 === 1 ){
-    		this.gameControl("direction", direction);
+    		this.updateStates("direction", direction);
     	}  	
     },
     lose(){ 
 			clearInterval(this.state.controlObj.intervalId);
-    	this.gameControl("palse", true);
+    	this.updateStates("palse", true);
     	alert("you lose");
     },
     checker(snake){ 
@@ -179,7 +207,7 @@ var snake = function () {
 	    	snake.queue.shift();
 	    	snake.body[tail] = 0;   	
 
-	    	this.gameControl("snake", snake);
+	    	this.updateStates("snake", snake);
 
     	}
 
@@ -187,12 +215,13 @@ var snake = function () {
     startGame:function(){
 
     	if(this.state.controlObj.palse){
+    		this.createItem();
     		let intervalId = setInterval(this.snakeMoving, this.state.controlObj.speed);
-    		this.gameControl("intervalId", intervalId);
-    		this.gameControl("palse", false);
+    		this.updateStates("intervalId", intervalId);
+    		this.updateStates("palse", false);
     	}else{
     		clearInterval(this.state.controlObj.intervalId);
-    		this.gameControl("palse", true);
+    		this.updateStates("palse", true);
     	}
     	
     },
@@ -201,10 +230,10 @@ var snake = function () {
 			  <div>
 			    <SnakeTable 
 			    	controlObj={this.state.controlObj}
-			    	gameControl={this.gameControl}/>
+			    	updateStates={this.updateStates}/>
 
 			    <ControlPanel
-			    	gameControl={this.gameControl}
+			    	updateStates={this.updateStates}
 			    	startGame={this.startGame}/>
 			  </div>
       );

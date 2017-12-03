@@ -50,9 +50,9 @@ var snake = function () {
 	  render: function() {
       return (
       	<div>   
-  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.gameControl("speed",0)}/> Low
-  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.gameControl("speed",1)}/> Mid
-  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.gameControl("speed",2)}/> Hig
+  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.updateStates("speed",0)}/> Low
+  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.updateStates("speed",1)}/> Mid
+  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.updateStates("speed",2)}/> Hig
       		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
       	</div>
       );
@@ -105,7 +105,7 @@ var snake = function () {
 	  componentWillUnmount() {
 	    window.removeEventListener('keydown', this.handleKeyDown);
 	  },	
-    gameControl:function(key, value){
+    updateStates:function(key, value){
     	let controlObj = this.state.controlObj;
     	controlObj[key] = value;
     	this.setState({"controlObj": controlObj});    	
@@ -123,11 +123,11 @@ var snake = function () {
 
     	if(this.state.controlObj.palse){
     		let intervalId = setInterval(this.snakeMoving, 1000);
-    		this.gameControl("intervalId", intervalId);
-    		this.gameControl("palse", false);
+    		this.updateStates("intervalId", intervalId);
+    		this.updateStates("palse", false);
     	}else{
     		clearInterval(this.state.controlObj.intervalId);
-    		this.gameControl("palse", true);
+    		this.updateStates("palse", true);
     	}
     	
     },
@@ -136,10 +136,10 @@ var snake = function () {
 			  <div>
 			    <SnakeTable 
 			    	controlObj={this.state.controlObj}
-			    	gameControl={this.gameControl}/>
+			    	updateStates={this.updateStates}/>
 
 			    <ControlPanel
-			    	gameControl={this.gameControl}
+			    	updateStates={this.updateStates}
 			    	startGame={this.startGame}/>
 			  </div>
       );
