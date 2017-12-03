@@ -170,6 +170,11 @@ var snake = function () {
     	this.updateStates("palse", true);
     	alert("you lose");
     },
+    win(){ 
+			clearInterval(this.state.controlObj.intervalId);
+    	this.updateStates("palse", true);
+    	alert("you win");
+    },
     checker(snake){ 
     	let col = this.state.controlObj.col;
     	let row = this.state.controlObj.row;
@@ -231,9 +236,14 @@ var snake = function () {
 					}	
 				  
 				}	
-				snake.item = Math.floor(Math.random() * (emptySpace.length));
+				if(emptySpace.length <= 2){
+					win();
+				}else{
+					snake.item = Math.floor(Math.random() * (emptySpace.length));
 
-				this.updateStates("snake", snake);
+					this.updateStates("snake", snake);
+				}
+
     	}
 
     },
