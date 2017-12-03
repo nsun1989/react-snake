@@ -65,9 +65,9 @@ var snake = function () {
 	  render: function() {
       return (
       	<div>   
-  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.gameControl("speed",0)}/> Low
-  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.gameControl("speed",1)}/> Mid
-  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.gameControl("speed",2)}/> Hig
+  				<input type="radio" className="" checked={true} name="gender" value="Low" onClick={() => this.props.gameControl("speed",1000)}/> Low
+  				<input type="radio" className="" name="gender" value="Mid" onClick={() => this.props.gameControl("speed",750)}/> Mid
+  				<input type="radio" className="" name="gender" value="Hig" onClick={() => this.props.gameControl("speed",500)}/> Hig
       		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
       	</div>
       );
@@ -82,9 +82,10 @@ var snake = function () {
           intervalId: 0,
 	        col:20,
 	        row:10,
-	        speed: 0,
+	        speed: 1000,
 	        direction:0,
 	        snake:{
+	        	head: 2,
 	        	queue: [1,2],
 	        	body: {
 	        		1 : 1,
@@ -120,24 +121,47 @@ var snake = function () {
 	  componentWillUnmount() {
 	    window.removeEventListener('keydown', this.handleKeyDown);
 	  },	
-    gameControl:function(key, value){
+    gameControl(key, value){
     	let controlObj = this.state.controlObj;
     	controlObj[key] = value;
     	this.setState({"controlObj": controlObj});    	
     },
     snakeDirection(direction){ 
-    	let curr_dirtion = this.state.controlObj.direction;
-    	if(curr_dirtion !== direction && Math.abs(direction - curr_dirtion) % 2 === 1 ){
+    	let curr_direction = this.state.controlObj.direction;
+    	if(curr_direction !== direction && Math.abs(direction - curr_direction) % 2 === 1 ){
     		this.gameControl("direction", direction);
     	}  	
     },
-    snakeMoving:function(){   	
-    	console.error("start");
+    snakeMoving(){   
+    	let direction = this.state.controlObj.direction;
+    	let snake = this.state.controlObj.snake;
+	  	let col = this.state.controlObj.col;
+	  	
+    	if(direction === 0){
+    		snake.head = snake.head + 1;
+
+    	}else if(direction === 1){
+    		snake.head = snake.head + col;   	
+
+    	}else if(direction === 2){
+    		snake.head = snake.head - 1;
+
+    	}else if(direction === 3){
+    		snake.head = snake.head - col;
+    	}
+    	snake.queue.push(snake.head)
+    	let tail = snake.queue[0];
+    	console.error(snake.queue);
+    	snake.queue.shift();
+    	snake.body[snake.head] = 1;
+    	snake.body[tail] = 0;
+
+    	this.gameControl("snake", snake);	
     },
     startGame:function(){
 
     	if(this.state.controlObj.palse){
-    		let intervalId = setInterval(this.snakeMoving, 1000);
+    		let intervalId = setInterval(this.snakeMoving, this.state.controlObj.speed);
     		this.gameControl("intervalId", intervalId);
     		this.gameControl("palse", false);
     	}else{
