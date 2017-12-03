@@ -17,9 +17,8 @@ var snake = function () {
 
 	var SnakeTableCell = React.createClass({
 		render: function() {
-			let className = (this.props.cellOccupied) ? "snake-table-cell occupy-cell" :  "snake-table-cell" 
       return (
-      	<span className={className} >	
+      	<span className={"snake-table-cell " + this.props.className} >	
       	</span>
       );
     }
@@ -47,10 +46,13 @@ var snake = function () {
 				let tr = [];				
 				for (let j=0; j < col; j++) {
 					index++;					
-					if (snake.body && snake.body[index] === 1 || snake.item === index){
-						tr.push(<td><SnakeTableCell cellOccupied={true} /></td>);
+					if (snake.body && snake.body[index] === 1){
+						tr.push(<td><SnakeTableCell className="snake" /></td>);
+					}else if(snake.item === index){
+						tr.push(<td><SnakeTableCell className="item" /></td>);
 					}else{
-						tr.push(<td><SnakeTableCell cellOccupied={false} /></td>);
+						tr.push(<td><SnakeTableCell className="" /></td>);
+					
 					}				  
 				}				
 			  table.push(<tr>{tr}</tr>);
@@ -153,6 +155,7 @@ var snake = function () {
 			  
 			}	
 			snake.item = Math.floor(Math.random() * (emptySpace.length));
+			console.error
 			this.updateStates("snake", snake);
 
   	},
@@ -173,13 +176,17 @@ var snake = function () {
     	if(snake.col >= col || snake.row >= row || snake.col < 0 || snake.row < 0 ){
     		return 0;
     	}
+    	if(snake.head === snake.item ){
+    		return 2;
+    	}
 
     	return 1;    	
     },
     snakeMoving(){   
     	let direction = this.state.controlObj.direction;
     	let snake = this.state.controlObj.snake;
-	  	let col = this.state.controlObj.col;
+	    let col = this.state.controlObj.col;
+	    let row = this.state.controlObj.row;
 	  	
     	if(direction === 0){
     		snake.head = snake.head + 1;
@@ -197,18 +204,36 @@ var snake = function () {
     		snake.head = snake.head - col;
     		snake.row--;
     	}
+
+    	if(snake.body[snake.head] === 1){
+    		this.lose();
+    	}
     	snake.queue.push(snake.head)
     	snake.body[snake.head] = 1;
+    	let tail = snake.queue[0];
     	if(this.checker(snake) === 0){
     		this.lose();
-    	}else{
-      	this.checker(snake);
-	    	let tail = snake.queue[0];
+    	}else if(this.checker(snake) === 1){
 	    	snake.queue.shift();
-	    	snake.body[tail] = 0;   	
-
+	    	snake.body[tail] = 0;  
 	    	this.updateStates("snake", snake);
+    	}else{
+	      let emptySpace = [];
 
+	    	let index = -1;
+
+				for (let i=0; i < row; i++) {							
+					for (let j=0; j < col; j++) {
+						index++;					
+						if (snake.body && snake.body[index] !== 1){						
+							emptySpace.push(index);
+						}				  
+					}	
+				  
+				}	
+				snake.item = Math.floor(Math.random() * (emptySpace.length));
+
+				this.updateStates("snake", snake);
     	}
 
     },

@@ -31,6 +31,11 @@ span.snake-table-cell{
 	border: 1px solid black;
 }
 
-.occupy-cell{
+span.snake{
 	background-color: grey;
+}
+
+
+span.item{
+	background-color: red;
 }
