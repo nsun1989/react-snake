@@ -91,7 +91,8 @@ var snake = function () {
 	        col:20,
 	        row:10,
 	        speed: 250,
-	        direction:0,	        
+	        direction:0,	
+	        directionBuff:0,        
 	        snake:{
 	        	col: 2,
 	        	row: 0,
@@ -162,7 +163,7 @@ var snake = function () {
     snakeDirection(direction){ 
     	let curr_direction = this.state.controlObj.direction;
     	if(curr_direction !== direction && Math.abs(direction - curr_direction) % 2 === 1 ){
-    		this.updateStates("direction", direction);
+    		this.updateStates("directionBuff", direction);
     	}  	
     },
     lose(){ 
@@ -188,7 +189,9 @@ var snake = function () {
     	return 1;    	
     },
     snakeMoving(){   
-    	let direction = this.state.controlObj.direction;
+    	let direction = this.state.controlObj.directionBuff;
+    	this.updateStates("direction", direction);
+
     	let snake = this.state.controlObj.snake;
 	    let col = this.state.controlObj.col;
 	    let row = this.state.controlObj.row;
