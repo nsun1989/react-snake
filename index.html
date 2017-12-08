@@ -71,16 +71,43 @@ var snake = function () {
     }
 	});
 
-	var RenderControlPanel = React.createClass({
+
+	var RenderGameControl = React.createClass({
+		RenderGameControlHeader(){
+			return(
+				<div>
+					<h1>{this.props.controlObj.ProjectName}</h1>
+	      	<h3>Author : {this.props.controlObj.Author}</h3>
+	      	<h3>Verson : {this.props.controlObj.Version}</h3>
+				</div>
+			);
+		},
+
+		renderRadioBtn(label,speed,defaultChecked){
+			return(
+				<label className="radio-btn-container">{label}
+  				<input type="radio" name="radio"  defaultChecked={defaultChecked} onClick={ () => this.props.updateStates("speed",speed)}/>
+ 				 	<span className="radio-btn-checkmark"></span>
+				</label>
+			);
+		},
 	  render: function() {
+	  	let btnText = this.props.palse ? "Start Game" : "Palse" ;
       return (
-      	<div className="control-panel-container"> 
-      		<h1>React Snake</h1>
-  				<input type="radio" className="" name="gender" value="Low" onClick={ () => this.props.updateStates("speed",380)}/> Flash <br/>
-  				<input type="radio" className="" name="gender" value="Mid" defaultChecked={true} onClick={ () => this.props.updateStates("speed",230)}/> Average Joe <br/>
-  				<input type="radio" className="" name="gender" value="God" onClick={ () => this.props.updateStates("speed",135)}/> Fast and Furious <br/>
-  				<input type="radio" className="" name="gender" value="God" onClick={ () => this.props.updateStates("speed",75)}/> Shining Finger!!! <br/>
-      		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
+      	<div className="game-control-container"> 
+      		{this.RenderGameControlHeader()}
+      		<button type="button" className="" onClick={()=> this.props.startGame()}>{btnText}</button>
+
+      		<div className="display-panel">
+      			<div className="display-panel-header">
+      				Difficulty
+      			</div>
+    				{this.renderRadioBtn("Flash the Sloth",380)}
+	  				{this.renderRadioBtn("Average Joe",230, true)}
+	  				{this.renderRadioBtn("Fast and Furious",135)}
+	  				{this.renderRadioBtn("Shining Finger!!!",75)}      			
+      		</div>
+      		      		
       	</div>
       );
     }
@@ -89,27 +116,7 @@ var snake = function () {
 	var ReactSnakeGame = React.createClass({
 		getInitialState: function() {
       return {
-      	controlObj : {
-          palse: true,
-          intervalId: 0,
-	        col:40,
-	        row:30,
-	        speed: 250,
-	        direction:0,	
-	        directionBuff:0,        
-	        snake:{
-	        	col: 2,
-	        	row: 0,
-	        	head: 2,
-	        	queue: [1,2],
-	        	body: {
-	        		1 : 1,
-	        		2 : 1
-	        	},
-	        	item: -1,
-	        }
-
-      	}
+      	controlObj : this.props.config
       }
     },
 		handleKeyDown(event){
@@ -272,9 +279,13 @@ var snake = function () {
 	  render: function() {
       return (
 			  <div className="game-screen-wrapper">
-			    <RenderControlPanel
+
+			    <RenderGameControl
 			    	updateStates={this.updateStates}
-			    	startGame={this.startGame}/>
+			    	startGame={this.startGame}
+			    	controlObj={this.state.controlObj}
+			    	palse={this.state.controlObj.palse}/>
+
 			    <RenderSnakeMovingTable 
 			    	controlObj={this.state.controlObj}
 			    	updateStates={this.updateStates}/>
@@ -286,9 +297,35 @@ var snake = function () {
 
 	var destination = document.querySelector("#root");
 
+	var config = {
+		ProjectName: "React Header",
+		Author:   "Nan Sun",
+		Version:  "1.0.0",
+
+		palse: true,
+		intervalId: 0,
+		col:40,
+		row:30,
+		speed: 250,
+		direction: 0,	
+		directionBuff: 0, 
+    snake:{
+    	col: 2,
+    	row: 0,
+    	head: 2,
+    	queue: [1,2],
+    	body: {
+    		1 : 1,
+    		2 : 1
+    	},
+    	item: -1,
+    }
+	};
+
+
 	ReactDOM.render(
 	  <div>
-	    <ReactSnakeGame/>
+	    <ReactSnakeGame config={config}/>
 	  </div>,
 	  destination
 	);  

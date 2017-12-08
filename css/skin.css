@@ -11,19 +11,28 @@
 
 body{  
   font-family:arcade;  
-  background-color: #739900;
+  background-color: #739900;  
+  text-decoration: none;
 }
 
-button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
+button {  
+    user-select: none;
+    background-color: #739900; /* Green */
+    border: 5px dashed #003300;
+    color: black;
     font-family:arcade;  
-    padding: 15px 32px;
+    padding-top: 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+    display: block;
+    font-size: 38px;
+    width:100%;
+}
+
+button:hover {
+    background-color: #004d00; /* Green */
+    border: 5px dashed #008000;
+    color: #00b300;
 }
 
 #root{
@@ -39,22 +48,27 @@ button {
   border-radius: 10px;
   float:left;
 }
-.control-panel-container{
+.game-control-container{
   padding:10px;
   float:left;
 }
 
-.control-panel-container h1{
+.game-control-container h1{
   font-size: 90px;
   margin-top: 25px;
-  margin-bottom: 25px;
+  margin-bottom: -20px;
+  padding-bottom: 0px;
+}
+.game-control-container h3{  
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .snake-moving-table{    
     border-spacing: 1px;
     border-collapse:separate; 
     padding:0px;
-    background:  #001a00; /* For browsers that do not support gradients */
+    background:  #004d00; /* For browsers that do not support gradients */
     background: linear-gradient(#004d00, #003300); /* Standard syntax */
 }
 
@@ -74,4 +88,73 @@ button {
 .items{
 	background-color: #00b300;
   border-radius: 50%;
+}
+
+.display-panel{
+  margin-top: 25px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border: 5px dashed #003300;
+}
+
+.display-panel .display-panel-header{
+  border-bottom: 5px dashed #003300;
+  margin-left: -25px;
+  margin-right: -25px;
+  padding-top: 15px;
+  display: block;
+}
+
+.display-panel .display-panel-header{
+  font-size: 38px;
+  text-align: center;
+  text-decoration: none;
+  font-family: arcade;
+  color: black;
+  margin-bottom: 25px;
+}
+
+/* The container */
+.radio-btn-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 36px;
+    user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.radio-btn-container input {
+    position: absolute;
+    opacity: 0;
+}
+
+/* Create a custom radio button */
+.radio-btn-checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #739900;
+    border: 4px dashed #003300;
+}
+
+/* add background color when radio button is checked */
+.radio-btn-container input:checked ~ .radio-btn-checkmark {
+    background-color: #004d00;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.radio-btn-checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio-btn-container input:checked ~ .radio-btn-checkmark:after {
+    display: block;
 }
