@@ -60,11 +60,13 @@ var snake = function () {
 			}			
 
       return (
-      	<table className="snake-moving-table">   
-      		<tbody>     	
-        		{table}
-        	</tbody>
-      	</table>
+      	<div className="snake-moving-table-container">
+	      	<table className="snake-moving-table">   
+	      		<tbody>     	
+	        		{table}
+	        	</tbody>
+	      	</table>
+      	</div>
       );
     }
 	});
@@ -72,11 +74,12 @@ var snake = function () {
 	var RenderControlPanel = React.createClass({
 	  render: function() {
       return (
-      	<div>   
-  				<input type="radio" className="" name="gender" value="Low" onClick={() => this.props.updateStates("speed",380)}/> Flash <br/>
-  				<input type="radio" className="" name="gender" value="Mid" defaultChecked={true} onClick={() => this.props.updateStates("speed",230)}/> Average Joe <br/>
-  				<input type="radio" className="" name="gender" value="God" onClick={() => this.props.updateStates("speed",135)}/> Fast and Furious <br/>
-  				<input type="radio" className="" name="gender" value="God" onClick={() => this.props.updateStates("speed",75)}/> Shining Finger!!! <br/>
+      	<div className="control-panel-container"> 
+      		<h1>React Snake</h1>
+  				<input type="radio" className="" name="gender" value="Low" onClick={ () => this.props.updateStates("speed",380)}/> Flash <br/>
+  				<input type="radio" className="" name="gender" value="Mid" defaultChecked={true} onClick={ () => this.props.updateStates("speed",230)}/> Average Joe <br/>
+  				<input type="radio" className="" name="gender" value="God" onClick={ () => this.props.updateStates("speed",135)}/> Fast and Furious <br/>
+  				<input type="radio" className="" name="gender" value="God" onClick={ () => this.props.updateStates("speed",75)}/> Shining Finger!!! <br/>
       		<button type="button" className="" onClick={()=> this.props.startGame()}>Start Game</button>
       	</div>
       );
@@ -89,8 +92,8 @@ var snake = function () {
       	controlObj : {
           palse: true,
           intervalId: 0,
-	        col:20,
-	        row:10,
+	        col:40,
+	        row:30,
 	        speed: 250,
 	        direction:0,	
 	        directionBuff:0,        
@@ -268,14 +271,14 @@ var snake = function () {
 
 	  render: function() {
       return (
-			  <div>
+			  <div className="game-screen-wrapper">
+			    <RenderControlPanel
+			    	updateStates={this.updateStates}
+			    	startGame={this.startGame}/>
 			    <RenderSnakeMovingTable 
 			    	controlObj={this.state.controlObj}
 			    	updateStates={this.updateStates}/>
 
-			    <RenderControlPanel
-			    	updateStates={this.updateStates}
-			    	startGame={this.startGame}/>
 			  </div>
       );
     }

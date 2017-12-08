@@ -4,22 +4,58 @@
 /*                                                                             */
 /* ----------------------------------------------------------------------------*/
 
+@font-face {
+  font-family: arcade;
+  src: url(ARCADE.TTF);
+}
+
+body{  
+  font-family:arcade;  
+  background-color: #739900;
+}
+
+button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    font-family:arcade;  
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
 #root{
-  padding: 50px;
-  background-color: #EEE;
+  padding: 25px;
 }
-#root h1{
-  font-size: 114px;
-  font-family:sans-serif;
+.game-screen-wrapper:after{
+  content:"";
+  display: block;
+  clear:both;
+}
+.snake-moving-table-container{
+  border: 25px double black;
+  border-radius: 10px;
+  float:left;
+}
+.control-panel-container{
+  padding:10px;
+  float:left;
 }
 
+.control-panel-container h1{
+  font-size: 90px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
 
-
-.snake-moving-table{
-    border: 1px solid black;
+.snake-moving-table{    
     border-spacing: 1px;
     border-collapse:separate; 
     padding:0px;
+    background:  #001a00; /* For browsers that do not support gradients */
+    background: linear-gradient(#004d00, #003300); /* Standard syntax */
 }
 
 .snake-moving-table tbody tr td div{
@@ -27,14 +63,15 @@
 	width:20px;
 	height:20px;
 	margin: 0px;
-	border: 1px solid black;
+	border: 1px dashed #008000;
 }
 
 .snake-body{
-	background-color: grey;
+	background-color: #00b300;
 }
 
 
 .items{
-	background-color: red;
+	background-color: #00b300;
+  border-radius: 50%;
 }
