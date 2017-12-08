@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-  <title>React Starter Template</title>
+  <title>React Snake</title>
   <link rel="stylesheet" type="text/css" href="./css/skin.css">
 </head>
 <body>
@@ -13,18 +13,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
 <script type="text/babel">
+
 var snake = function () {
 
-	var SnakeTableCell = React.createClass({
+	var RenderTableCell = React.createClass({
 		render: function() {
       return (
-      	<span className={"snake-table-cell " + this.props.className} >	
-      	</span>
+      	<div className={this.props.className} >	
+      	</div>
       );
     }
 	});
 
-	var SnakeTable = React.createClass({
+	var RenderSnakeMovingTable = React.createClass({
 	  render: function() {
 	  	let row = this.props.controlObj.row || 10;
 	  	let col = this.props.controlObj.col || 20;
@@ -47,11 +48,11 @@ var snake = function () {
 				for (let j=0; j < col; j++) {
 					index++;					
 					if (snake.body && snake.body[index] === 1){
-						tr.push(<td><SnakeTableCell className="snake" /></td>);
+						tr.push(<td><RenderTableCell className="snake-body" /></td>);
 					}else if(snake.item === index){
-						tr.push(<td><SnakeTableCell className="item" /></td>);
+						tr.push(<td><RenderTableCell className="items" /></td>);
 					}else{
-						tr.push(<td><SnakeTableCell className="" /></td>);
+						tr.push(<td><RenderTableCell className="" /></td>);
 					
 					}				  
 				}				
@@ -59,7 +60,7 @@ var snake = function () {
 			}			
 
       return (
-      	<table>   
+      	<table className="snake-moving-table">   
       		<tbody>     	
         		{table}
         	</tbody>
@@ -68,7 +69,7 @@ var snake = function () {
     }
 	});
 
-	var ControlPanel = React.createClass({
+	var RenderControlPanel = React.createClass({
 	  render: function() {
       return (
       	<div>   
@@ -82,7 +83,7 @@ var snake = function () {
     }
 	});
 
-	var SnakeGame = React.createClass({
+	var ReactSnakeGame = React.createClass({
 		getInitialState: function() {
       return {
       	controlObj : {
@@ -250,8 +251,9 @@ var snake = function () {
     	}
 
     },
-    startGame:function(){
 
+
+    startGame:function(){
     	if(this.state.controlObj.palse){
     		this.createItem();
     		let intervalId = setInterval(this.snakeMoving, this.state.controlObj.speed);
@@ -263,13 +265,15 @@ var snake = function () {
     	}
     	
     },
+
 	  render: function() {
       return (
 			  <div>
-			    <SnakeTable 
+			    <RenderSnakeMovingTable 
 			    	controlObj={this.state.controlObj}
 			    	updateStates={this.updateStates}/>
-			    <ControlPanel
+
+			    <RenderControlPanel
 			    	updateStates={this.updateStates}
 			    	startGame={this.startGame}/>
 			  </div>
@@ -278,10 +282,10 @@ var snake = function () {
 	});
 
 	var destination = document.querySelector("#root");
-	
+
 	ReactDOM.render(
 	  <div>
-	    <SnakeGame/>
+	    <ReactSnakeGame/>
 	  </div>,
 	  destination
 	);  
