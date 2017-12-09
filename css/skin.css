@@ -8,7 +8,9 @@
   font-family: arcade;
   src: url(ARCADE.TTF);
 }
+html, body{
 
+}
 body{  
   font-family:arcade;  
   background-color: #739900;  
@@ -16,33 +18,71 @@ body{
 }
 
 button {  
-    user-select: none;
-    background-color: #739900; /* Green */
-    border: 5px dashed #003300;
-    color: black;
-    font-family:arcade;  
-    padding-top: 15px;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    font-size: 38px;
-    width:100%;
+  outline: none;
+  background-color: #739900; /* Green */
+  border: 5px dashed #003300;
+  color: black;
+  font-family:arcade;  
+  padding-top: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 38px;
+}
+.button-full {  
+  width:100%;
 }
 
 button:hover {
-    background-color: #004d00; /* Green */
-    border: 5px dashed #008000;
-    color: #00b300;
+  background-color: #004d00; /* Green */
+  border: 5px dashed #008000;
+  color: #00b300;
 }
 
 #root{
   padding: 25px;
 }
-.game-screen-wrapper{
+.main-container{
+  width:100%;
+}
+.winning-panel{
+  width:100%;  
+  height:100%;
+  position: absolute; top: 0; left: 0; 
+  background-color: rgba(0, 77, 0, 0.8); 
+  z-index: 100;
+  padding-top: 60px;
+}
+.winning-panel div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aligner-item h1{
+  font-size: 60px;
+  text-align: center;
+}
+.display-none{
+  display:none;
+}
+.losing-panel{
+  width:100%;
+  height:100%;
+  position: absolute; top: 0; left: 0; 
+  background-color: rgba(0, 77, 0, 0.8); 
+  z-index: 100;
+}
+.losing-panel div{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container-wrapper{
   display: table;
   margin: 0 auto;
 }
-.game-screen-wrapper:after{
+.container-wrapper:after{
   content:"";
   display: block;
   clear:both;
@@ -79,8 +119,8 @@ button:hover {
 
 .snake-moving-table tbody tr td div{
 	display: block;
-	width:20px;
-	height:20px;
+	width:30px;
+	height:30px;
 	margin: 0px;
 	border: 1px dashed #008000;
 }

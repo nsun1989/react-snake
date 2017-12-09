@@ -27,10 +27,10 @@ var snake = function () {
 
 	var RenderSnakeMovingTable = React.createClass({
 	  render: function() {
-	  	let row = this.props.controlObj.row || 10;
-	  	let col = this.props.controlObj.col || 20;
+	  	let row = this.props.controls.row || 10;
+	  	let col = this.props.controls.col || 20;
 
-	  	let snake = this.props.controlObj.snake || {};
+	  	let snake = this.props.controls.snake || {};
 
       var table = [];
       let tr = [];
@@ -76,15 +76,15 @@ var snake = function () {
 		RenderGameControlHeader(){
 			return(
 				<div>
-					<h1>{this.props.controlObj.ProjectName}</h1>
-	      	<h3>Author : {this.props.controlObj.Author}</h3>
-	      	<h3>Verson : {this.props.controlObj.Version}</h3>
+					<h1>{this.props.captions.ProjectName}</h1>
+	      	<h3>Author : {this.props.captions.Author}</h3>
+	      	<h3>Verson : {this.props.captions.Version}</h3>
 				</div>
 			);
 		},
 
 		RenderGameScore(){
-			let score = this.props.controlObj.gameScore.toString() || "0";				
+			let score = this.props.controls.gameScore.toString() || "0";				
 			
 			return(
 				<div className="game-score-container">
@@ -102,20 +102,20 @@ var snake = function () {
 			);
 		},
 	  render: function() {
-	  	let btnText = this.props.controlObj.palse ? "Start Game" : "Palse" ;
+	  	let btnText = this.props.controls.pause ? "Start Game" : "Stop Game" ;
       return (
       	<div className="game-control-container"> 
       		{this.RenderGameControlHeader()}
-      		<button type="button" className="" onClick={()=> this.props.startGame()}>{btnText}</button>
+      		<button type="button" className="button-full" onClick={()=> this.props.startGame()}>{btnText}</button>
 
       		<div className="display-panel">
       			<div className="display-panel-header">
       				Difficulty
       			</div>
-    				{this.renderRadioBtn("Flash the Sloth",380)}
-	  				{this.renderRadioBtn("Average Joe",230, true)}
-	  				{this.renderRadioBtn("Fast and Furious",135)}
-	  				{this.renderRadioBtn("Shining Finger!!!",75)}      			
+    				{this.renderRadioBtn("Flash the Sloth",270)}
+	  				{this.renderRadioBtn("Average Joe",200, true)}
+	  				{this.renderRadioBtn("Fast and Furious",150)}
+	  				{this.renderRadioBtn("Shining Finger!!!",85)}      			
       		</div>
       		      
       		<div className="display-panel">
@@ -132,7 +132,7 @@ var snake = function () {
 	var ReactSnakeGame = React.createClass({
 		getInitialState: function() {
       return {
-      	controlObj : this.props.config
+      	controls :  this.props.controls
       }
     },
 		handleKeyDown(event){
@@ -161,14 +161,14 @@ var snake = function () {
 	    window.removeEventListener('keydown', this.handleKeyDown);
 	  },	
     updateStates(key, value){
-    	let controlObj = this.state.controlObj;
-    	controlObj[key] = value;
-    	this.setState({"controlObj": controlObj});    	
+    	let controls = this.state.controls;
+    	controls[key] = value;
+    	this.setState({"controls": controls});    	
     },
     createItem(){
-    	let col = this.state.controlObj.col;
-    	let row = this.state.controlObj.row;
-    	let snake = this.state.controlObj.snake;
+    	let col = this.state.controls.col;
+    	let row = this.state.controls.row;
+    	let snake = this.state.controls.snake;
       let emptySpace = [];
 
     	let index = -1;
@@ -182,47 +182,49 @@ var snake = function () {
 				}	
 			  
 			}	
-			snake.item = Math.floor(Math.random() * (emptySpace.length));
-			//console.error
+			snake.item = Math.floor(Math.random() * (emptySpace.length));			
 			this.updateStates("snake", snake);
 
   	},
     snakeDirection(direction){ 
-    	let curr_direction = this.state.controlObj.direction;
+    	let curr_direction = this.state.controls.direction;
     	if(curr_direction !== direction && Math.abs(direction - curr_direction) % 2 === 1 ){
     		this.updateStates("directionBuff", direction);
     	}  	
     },
     lose(){ 
-			clearInterval(this.state.controlObj.intervalId);
-    	this.updateStates("palse", true);
-    	alert("you lose");
+			clearInterval(this.state.controls.intervalId);
+    	this.updateStates("pause", true);
+    	this.updateStates("win", true);
     },
     win(){ 
-			clearInterval(this.state.controlObj.intervalId);
-    	this.updateStates("palse", true);
-    	alert("you win");
+			clearInterval(this.state.controls.intervalId);
+    	this.updateStates("pause", true);
+    	this.updateStates("win", true);
     },
     checker(snake){ 
-    	let col = this.state.controlObj.col;
-    	let row = this.state.controlObj.row;
+    	let col = this.state.controls.col;
+    	let row = this.state.controls.row;
     	if(snake.col >= col || snake.row >= row || snake.col < 0 || snake.row < 0 ){
     		return 0;
     	}
     	if(snake.head === snake.item ){
+    		let audio = this.props.audios.eatItem;
+    		audio.currentTime = 0;
+    		audio.play();
     		return 2;
     	}
 
     	return 1;    	
     },
     snakeMoving(){   
-    	let direction = this.state.controlObj.directionBuff;
+    	let direction = this.state.controls.directionBuff;
     	this.updateStates("direction", direction);
 
-    	let snake = this.state.controlObj.snake;
-	    let col = this.state.controlObj.col;
-	    let row = this.state.controlObj.row;
-	    let gameScore = this.state.controlObj.gameScore;
+    	let snake = this.state.controls.snake;
+	    let col = this.state.controls.col;
+	    let row = this.state.controls.row;
+	    let gameScore = this.state.controls.gameScore;
 	  	
     	if(direction === 0){
     		snake.head = snake.head + 1;
@@ -258,7 +260,7 @@ var snake = function () {
 	      let emptySpace = [];
 
 	    	let index = -1;
-	    	gameScore++;
+	    	gameScore+=10;
 	    	console.error(gameScore);
 	    	this.updateStates("gameScore", gameScore);
 
@@ -282,34 +284,111 @@ var snake = function () {
     	}
 
     },
-
-
+    rePlayGame(){
+    	this.setState({"controls" : {
+				win:false,
+				lose:false,
+				pause: true,
+				intervalId: 0,
+				col:12,
+				row:17,
+				speed: 200,
+				direction: 0,	
+				directionBuff: 0, 
+				gameScore: 0		    
+			}});
+    	
+  	},
     startGame:function(){
-    	if(this.state.controlObj.palse){
-    		this.createItem();
-    		let intervalId = setInterval(this.snakeMoving, this.state.controlObj.speed);
-    		this.updateStates("intervalId", intervalId);
-    		this.updateStates("palse", false);
+    	let audio = this.props.audios.bgMusic;
+			
+    	if(this.state.controls.pause){    		
+    		let intervalId = setInterval(this.snakeMoving, this.state.controls.speed);    		    		
+    		this.updateStates("snake", {
+		    	col: 2,
+		    	row: 0,
+		    	head: 2,
+		    	queue: [1,2],
+		    	body: {
+		    		1 : 1,
+		    		2 : 1
+		    	},
+		    	item: -1,
+		    });
+		    this.createItem();
+		    this.updateStates("intervalId", intervalId);
+		    this.updateStates("pause", false);
+		    audio.play();
     	}else{
-    		clearInterval(this.state.controlObj.intervalId);
-    		this.updateStates("palse", true);
+    		clearInterval(this.state.controls.intervalId);
+    		this.updateStates("pause", true);
+    		audio.pause();
+    		audio.currentTime = 0;
     	}
     	
     },
+    renderWiningPanel(){
+    	let className = this.state.controls.win ? "" : "display-none";
+    	return(    	    		
+			  <div className={"winning-panel " + className} >
+			  	<div className="aligner-item">
+			  		<h1>congratulations!</h1>
+			  	</div>	
+			  	<div className="aligner-item">
+			  		<h1>Your Score : {this.state.controls.gameScore} </h1>
+			  	</div>	
+			  	<div className="aligner-item">
+			  		<button type="button" onClick={() => this.rePlayGame()}>Play Again</button>
+			  	</div>	 				  				  
+			  </div>
+    	);
 
-	  render: function() {
-      return (
-			  <div className="game-screen-wrapper">
+    },
+    renderLosingPanel(){
+    	console.error(this.state.controls.lose);
+    	let className = this.state.controls.lose ? "" : "display-none";
+    	console.error(className);
 
+    	return(    		
+			  <div className={"losing-panel " + className} >
+				  <div className="aligner-item">
+			  		<h1>You Lose!</h1>
+			  	</div>	
+			  	<div className="aligner-item">
+			  		<h1>Your Score : {this.state.controls.gameScore} </h1>
+			  	</div>	
+			  	<div className="aligner-item">
+			  		<button type="button" onClick={() => this.rePlayGame()}>Play Again</button>
+			  	</div>			  
+			  </div>
+    	);
+
+    },
+    renderGamingPanel(){
+    	return(
+			  <div className="container-wrapper">
+			  	{
 			    <RenderGameControl
 			    	updateStates={this.updateStates}
 			    	startGame={this.startGame}
-			    	controlObj={this.state.controlObj}/>
-
+			    	controls={this.state.controls}
+			    	captions={this.props.captions}/>
+			    }
+			    {
 			    <RenderSnakeMovingTable 
-			    	controlObj={this.state.controlObj}
+			    	controls={this.state.controls}
 			    	updateStates={this.updateStates}/>
+			  	}
+			  </div>
+    	);
 
+    },
+	  render: function() {
+      return (
+      	<div className="main-container">
+      		{this.renderWiningPanel()}
+      		{this.renderLosingPanel()}
+      		{this.renderGamingPanel()}
 			  </div>
       );
     }
@@ -318,35 +397,40 @@ var snake = function () {
 	var destination = document.querySelector("#root");
 
 	var config = {
-		ProjectName: "React Snake",
-		Author:   "Nan Sun",
-		Version:  "1.0.0",
-
-		palse: true,
-		intervalId: 0,
-		col:31,
-		row:24,
-		speed: 250,
-		direction: 0,	
-		directionBuff: 0, 
-		gameScore: 0,
-    snake:{
-    	col: 2,
-    	row: 0,
-    	head: 2,
-    	queue: [1,2],
-    	body: {
-    		1 : 1,
-    		2 : 1
-    	},
-    	item: -1,
-    }
+		captions : {
+			ProjectName: "React Snake",
+			Author:   "Nan Sun",
+			Version:  "1.0.0",
+		},
+		controls : {
+			win:false,
+			lose:false,
+			pause: true,
+			intervalId: 0,
+			col:12,
+			row:17,
+			speed: 200,
+			direction: 0,	
+			directionBuff: 0, 
+			gameScore: 0,
+	    snake:{}
+		},
+		audios : {
+			bgMusic : new Audio('files/gimmick-mission4.mp3'),
+			eatItem : new Audio('files/eatItem.mp3'),
+			win  : new Audio('files/gimmick-mission4.mp3'),
+			lose : new Audio('files/gimmick-mission4.mp3')
+		}
 	};
+	config.audios.bgMusic.addEventListener('ended', function() {
+    this.currentTime = 0;
+    this.play();
+	}, false);	
 
 
 	ReactDOM.render(
 	  <div>
-	    <ReactSnakeGame config={config}/>
+	    <ReactSnakeGame captions={config.captions} controls={config.controls} audios={config.audios}/>
 	  </div>,
 	  destination
 	);  
