@@ -105,8 +105,8 @@ button:hover {
   padding-bottom: 0px;
 }
 .game-control-container h3{  
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .snake-moving-table{    

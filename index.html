@@ -48,15 +48,15 @@ var snake = function () {
 				for (let j=0; j < col; j++) {
 					index++;					
 					if (snake.body && snake.body[index] === 1){
-						tr.push(<td><RenderTableCell className="snake-body" /></td>);
+						tr.push(<td key={"index_"+index}><RenderTableCell className="snake-body" /></td>);
 					}else if(snake.item === index){
-						tr.push(<td><RenderTableCell className="items" /></td>);
+						tr.push(<td key={"index_"+index}><RenderTableCell className="items" /></td>);
 					}else{
-						tr.push(<td><RenderTableCell className="" /></td>);
+						tr.push(<td key={"index_"+index}><RenderTableCell className="" /></td>);
 					
 					}				  
 				}				
-			  table.push(<tr>{tr}</tr>);
+			  table.push(<tr key={"row_" + i}>{tr}</tr>);
 			}			
 
       return (
@@ -77,7 +77,6 @@ var snake = function () {
 			return(
 				<div>
 					<h1>{this.props.captions.ProjectName}</h1>
-	      	<h3>Author : {this.props.captions.Author}</h3>
 	      	<h3>Verson : {this.props.captions.Version}</h3>
 				</div>
 			);
@@ -123,7 +122,10 @@ var snake = function () {
       				Score
       			</div>
     				{this.RenderGameScore()}    			
-      		</div>		
+      		</div>	
+      		<div>
+	      		<h3>Credits: All music from the original Super Mario Bros</h3>	      	
+					</div>	
       	</div>
       );
     }
@@ -182,7 +184,7 @@ var snake = function () {
 				}	
 			  
 			}	
-			console.error(emptySpace)
+			//console.error(emptySpace)
 			snake.item = Math.floor(Math.random() * (emptySpace.length));			
 			this.updateStates("snake", snake);
 
@@ -289,7 +291,7 @@ var snake = function () {
 					win();
 				}else{
 					let randIndex = Math.floor(Math.random() * (emptySpace.length));
-					console.error(randIndex);
+					//console.error(randIndex);
 					snake.item = emptySpace[randIndex];
 					this.updateStates("snake", snake);
 				}
