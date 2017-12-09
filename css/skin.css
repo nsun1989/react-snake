@@ -38,6 +38,10 @@ button:hover {
 #root{
   padding: 25px;
 }
+.game-screen-wrapper{
+  display: table;
+  margin: 0 auto;
+}
 .game-screen-wrapper:after{
   content:"";
   display: block;
@@ -46,6 +50,7 @@ button:hover {
 .snake-moving-table-container{
   border: 25px double black;
   border-radius: 10px;
+  margin-top: 40px;
   float:left;
 }
 .game-control-container{
@@ -54,7 +59,7 @@ button:hover {
 }
 
 .game-control-container h1{
-  font-size: 90px;
+  font-size: 60px;
   margin-top: 25px;
   margin-bottom: -20px;
   padding-bottom: 0px;
