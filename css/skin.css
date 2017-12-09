@@ -114,6 +114,14 @@ button:hover {
   margin-bottom: 25px;
 }
 
+.game-score-container{
+  font-size: 68px;
+  text-align: center;
+  text-decoration: none;
+  font-family: arcade;
+  color: black;
+}
+
 /* The container */
 .radio-btn-container {
     display: block;

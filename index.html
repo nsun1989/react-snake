@@ -36,7 +36,7 @@ var snake = function () {
       let tr = [];
 
       let index = -1;
-      console.error(snake.body);
+      //console.error(snake.body);
 
       let emptySpace = {
       	queue: [],
@@ -83,6 +83,16 @@ var snake = function () {
 			);
 		},
 
+		RenderGameScore(){
+			let score = this.props.controlObj.gameScore.toString() || "0";				
+			
+			return(
+				<div className="game-score-container">
+					{score}
+				</div>
+			);
+		},
+
 		renderRadioBtn(label,speed,defaultChecked){
 			return(
 				<label className="radio-btn-container">{label}
@@ -92,7 +102,7 @@ var snake = function () {
 			);
 		},
 	  render: function() {
-	  	let btnText = this.props.palse ? "Start Game" : "Palse" ;
+	  	let btnText = this.props.controlObj.palse ? "Start Game" : "Palse" ;
       return (
       	<div className="game-control-container"> 
       		{this.RenderGameControlHeader()}
@@ -107,7 +117,13 @@ var snake = function () {
 	  				{this.renderRadioBtn("Fast and Furious",135)}
 	  				{this.renderRadioBtn("Shining Finger!!!",75)}      			
       		</div>
-      		      		
+      		      
+      		<div className="display-panel">
+      			<div className="display-panel-header">
+      				Score
+      			</div>
+    				{this.RenderGameScore()}    			
+      		</div>		
       	</div>
       );
     }
@@ -138,7 +154,7 @@ var snake = function () {
 	    }
 		},
 		componentWillMount() {
-			console.error("componentWillMount");
+			//console.error("componentWillMount");
 	    window.addEventListener('keydown', this.handleKeyDown);
 	  },
 	  componentWillUnmount() {
@@ -167,7 +183,7 @@ var snake = function () {
 			  
 			}	
 			snake.item = Math.floor(Math.random() * (emptySpace.length));
-			console.error
+			//console.error
 			this.updateStates("snake", snake);
 
   	},
@@ -206,6 +222,7 @@ var snake = function () {
     	let snake = this.state.controlObj.snake;
 	    let col = this.state.controlObj.col;
 	    let row = this.state.controlObj.row;
+	    let gameScore = this.state.controlObj.gameScore;
 	  	
     	if(direction === 0){
     		snake.head = snake.head + 1;
@@ -236,10 +253,14 @@ var snake = function () {
 	    	snake.queue.shift();
 	    	snake.body[tail] = 0;  
 	    	this.updateStates("snake", snake);
+
     	}else{
 	      let emptySpace = [];
 
 	    	let index = -1;
+	    	gameScore++;
+	    	console.error(gameScore);
+	    	this.updateStates("gameScore", gameScore);
 
 				for (let i=0; i < row; i++) {							
 					for (let j=0; j < col; j++) {
@@ -283,8 +304,7 @@ var snake = function () {
 			    <RenderGameControl
 			    	updateStates={this.updateStates}
 			    	startGame={this.startGame}
-			    	controlObj={this.state.controlObj}
-			    	palse={this.state.controlObj.palse}/>
+			    	controlObj={this.state.controlObj}/>
 
 			    <RenderSnakeMovingTable 
 			    	controlObj={this.state.controlObj}
@@ -298,17 +318,18 @@ var snake = function () {
 	var destination = document.querySelector("#root");
 
 	var config = {
-		ProjectName: "React Header",
+		ProjectName: "React Snake",
 		Author:   "Nan Sun",
 		Version:  "1.0.0",
 
 		palse: true,
 		intervalId: 0,
-		col:40,
-		row:30,
+		col:30,
+		row:25,
 		speed: 250,
 		direction: 0,	
 		directionBuff: 0, 
+		gameScore: 0,
     snake:{
     	col: 2,
     	row: 0,
