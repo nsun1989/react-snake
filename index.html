@@ -182,6 +182,7 @@ var snake = function () {
 				}	
 			  
 			}	
+			console.error(emptySpace)
 			snake.item = Math.floor(Math.random() * (emptySpace.length));			
 			this.updateStates("snake", snake);
 
@@ -195,12 +196,22 @@ var snake = function () {
     lose(){ 
 			clearInterval(this.state.controls.intervalId);
     	this.updateStates("pause", true);
-    	this.updateStates("win", true);
+    	this.updateStates("lose", true);
+    	let bgMusic = this.props.audios.bgMusic;
+    	let lose = this.props.audios.lose;
+    	bgMusic.pause();
+    	bgMusic.currentTime = 0;
+    	lose.play();
     },
     win(){ 
 			clearInterval(this.state.controls.intervalId);
     	this.updateStates("pause", true);
     	this.updateStates("win", true);
+    	let bgMusic = this.props.audios.bgMusic;
+    	let win = this.props.audios.win;
+    	bgMusic.pause();
+    	bgMusic.currentTime = 0;
+    	win.play();
     },
     checker(snake){ 
     	let col = this.state.controls.col;
@@ -209,9 +220,9 @@ var snake = function () {
     		return 0;
     	}
     	if(snake.head === snake.item ){
-    		let audio = this.props.audios.eatItem;
-    		audio.currentTime = 0;
-    		audio.play();
+    		let eatItem = this.props.audios.eatItem;
+    		eatItem.currentTime = 0;
+    		eatItem.play();
     		return 2;
     	}
 
@@ -249,9 +260,10 @@ var snake = function () {
     	snake.queue.push(snake.head)
     	snake.body[snake.head] = 1;
     	let tail = snake.queue[0];
-    	if(this.checker(snake) === 0){
+    	let result = this.checker(snake);
+    	if(result === 0){
     		this.lose();
-    	}else if(this.checker(snake) === 1){
+    	}else if(result === 1){
 	    	snake.queue.shift();
 	    	snake.body[tail] = 0;  
 	    	this.updateStates("snake", snake);
@@ -260,8 +272,7 @@ var snake = function () {
 	      let emptySpace = [];
 
 	    	let index = -1;
-	    	gameScore+=10;
-	    	console.error(gameScore);
+	    	gameScore+=10;	    	
 	    	this.updateStates("gameScore", gameScore);
 
 				for (let i=0; i < row; i++) {							
@@ -273,11 +284,13 @@ var snake = function () {
 					}	
 				  
 				}	
+				
 				if(emptySpace.length <= 2){
 					win();
 				}else{
-					snake.item = Math.floor(Math.random() * (emptySpace.length));
-
+					let randIndex = Math.floor(Math.random() * (emptySpace.length));
+					console.error(randIndex);
+					snake.item = emptySpace[randIndex];
 					this.updateStates("snake", snake);
 				}
 
@@ -345,10 +358,7 @@ var snake = function () {
 
     },
     renderLosingPanel(){
-    	console.error(this.state.controls.lose);
     	let className = this.state.controls.lose ? "" : "display-none";
-    	console.error(className);
-
     	return(    		
 			  <div className={"losing-panel " + className} >
 				  <div className="aligner-item">
@@ -416,10 +426,10 @@ var snake = function () {
 	    snake:{}
 		},
 		audios : {
-			bgMusic : new Audio('files/gimmick-mission4.mp3'),
+			bgMusic : new Audio('files/bgMusic.mp3'),
 			eatItem : new Audio('files/eatItem.mp3'),
-			win  : new Audio('files/gimmick-mission4.mp3'),
-			lose : new Audio('files/gimmick-mission4.mp3')
+			win  : new Audio('files/win.mp3'),
+			lose : new Audio('files/lose.mp3')
 		}
 	};
 	config.audios.bgMusic.addEventListener('ended', function() {
