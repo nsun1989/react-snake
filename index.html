@@ -2,8 +2,8 @@
 <html>
 <head>
 	<meta charset="utf-8"/>
-  <title>React Snake</title>
-  <link rel="stylesheet" type="text/css" href="./css/skin.css">
+	<title>React Snake</title>
+	<link rel="stylesheet" type="text/css" href="./css/skin.css">
 </head>
 <body>
 
@@ -16,32 +16,28 @@
 
 var snake = function () {
 
+	// Render function for Table Cell
 	var RenderTableCell = React.createClass({
 		render: function() {
-      return (
-      	<div className={this.props.className} >	
-      	</div>
-      );
-    }
+			return (
+				<div className={this.props.className} >	
+				</div>
+			);
+		}
 	});
 
+	// Render Function For game table
 	var RenderSnakeMovingTable = React.createClass({
-	  render: function() {
-	  	let row = this.props.controls.row || 10;
-	  	let col = this.props.controls.col || 20;
+		render: function() {
 
-	  	let snake = this.props.controls.snake || {};
+			let row 	= this.props.controls.row || 10;
+			let col 	= this.props.controls.col || 20;
+			let snake = this.props.controls.snake || {};
 
-      var table = [];
-      let tr = [];
+			var table = [];
+			let tr = [];
 
-      let index = -1;
-      //console.error(snake.body);
-
-      let emptySpace = {
-      	queue: [],
-      	lookup: {},
-    	};
+			let index = -1;
 
 			for (let i=0; i < row; i++) {
 				let tr = [];				
@@ -56,35 +52,37 @@ var snake = function () {
 					
 					}				  
 				}				
-			  table.push(<tr key={"row_" + i}>{tr}</tr>);
+				table.push(<tr key={"row_" + i}>{tr}</tr>);
 			}			
 
-      return (
-      	<div className="snake-moving-table-container">
-	      	<table className="snake-moving-table">   
-	      		<tbody>     	
-	        		{table}
-	        	</tbody>
-	      	</table>
-      	</div>
-      );
-    }
+			return (
+				<div className="snake-moving-table-container">
+					<table className="snake-moving-table">   
+						<tbody>     	
+							{table}
+						</tbody>
+					</table>
+				</div>
+			);
+		}
 	});
 
-
+	// Render Game Control Panel
 	var RenderGameControl = React.createClass({
+
+		// Render Header (Game Name, Version, etc)
 		RenderGameControlHeader(){
 			return(
 				<div>
 					<h1>{this.props.captions.ProjectName}</h1>
-	      	<h3>Verson : {this.props.captions.Version}</h3>
+					<h3>Verson : {this.props.captions.Version}</h3>
 				</div>
 			);
 		},
 
+		// Render a panel to display Game Score
 		RenderGameScore(){
-			let score = this.props.controls.gameScore.toString() || "0";				
-			
+			let score = this.props.controls.gameScore.toString() || "0";	
 			return(
 				<div className="game-score-container">
 					{score}
@@ -92,88 +90,97 @@ var snake = function () {
 			);
 		},
 
+		// Render Radio Button to control game speed
 		renderRadioBtn(label,speed,defaultChecked){
 			return(
 				<label className="radio-btn-container">{label}
-  				<input type="radio" name="radio"  defaultChecked={defaultChecked} onClick={ () => this.props.updateStates("speed",speed)}/>
- 				 	<span className="radio-btn-checkmark"></span>
+					<input type="radio" name="radio"  defaultChecked={defaultChecked} onClick={ () => this.props.updateStates("speed",speed)}/>
+					<span className="radio-btn-checkmark"></span>
 				</label>
 			);
 		},
-	  render: function() {
-	  	let btnText = this.props.controls.pause ? "Start Game" : "Stop Game" ;
-      return (
-      	<div className="game-control-container"> 
-      		{this.RenderGameControlHeader()}
-      		<button type="button" className="button-full" onClick={()=> this.props.startGame()}>{btnText}</button>
 
-      		<div className="display-panel">
-      			<div className="display-panel-header">
-      				Difficulty
-      			</div>
-    				{this.renderRadioBtn("Flash the Sloth",270)}
-	  				{this.renderRadioBtn("Average Joe",200, true)}
-	  				{this.renderRadioBtn("Fast and Furious",150)}
-	  				{this.renderRadioBtn("Shining Finger!!!",85)}      			
-      		</div>
-      		      
-      		<div className="display-panel">
-      			<div className="display-panel-header">
-      				Score
-      			</div>
-    				{this.RenderGameScore()}    			
-      		</div>	
-      		<div>
-	      		<h3>Credits: All music from the original Super Mario Bros</h3>	      	
+		render: function() {
+			let btnText = this.props.controls.pause ? "Start Game" : "Stop Game" ;
+			return (
+				<div className="game-control-container"> 
+					{this.RenderGameControlHeader()}
+					<button type="button" className="button-full" onClick={()=> this.props.startGame()}>{btnText}</button>
+
+					<div className="display-panel">
+						<div className="display-panel-header">
+							Difficulty
+						</div>
+						{this.renderRadioBtn("Flash the Sloth",270)}
+						{this.renderRadioBtn("Average Joe",200, true)}
+						{this.renderRadioBtn("Fast and Furious",150)}
+						{this.renderRadioBtn("Shining Finger!!!",85)}      			
+					</div>
+								
+					<div className="display-panel">
+						<div className="display-panel-header">
+							Score
+						</div>
+						{this.RenderGameScore()}    			
 					</div>	
-      	</div>
-      );
-    }
+					<div>
+						<h3>Credits: All music from the original Super Mario Bros</h3>	      	
+					</div>	
+				</div>
+			);
+		}
 	});
 
+	// Main Logic Function, ReactSnakeGame 
 	var ReactSnakeGame = React.createClass({
 		getInitialState: function() {
-      return {
-      	controls :  this.props.controls
-      }
-    },
-		handleKeyDown(event){
-	    //right
-	    if(event.keyCode == 39){
-	      this.snakeDirection(0);
-	    }
-	    //down
-	    else if(event.keyCode == 40){
-	    	this.snakeDirection(1);
-	    }
-	    //left
-	    else if(event.keyCode == 37){
-	    	this.snakeDirection(2);
-	    }
-	    //up
-	   	else if(event.keyCode == 38){
-	   		this.snakeDirection(3);
-	    }
+			return {
+				controls :  this.props.controls
+			}
 		},
+		// Detect key down to change the direction of snake 
+		handleKeyDown(event){
+			//right
+			if(event.keyCode == 39){
+				this.snakeDirection(0);
+			}
+			//down
+			else if(event.keyCode == 40){
+				this.snakeDirection(1);
+			}
+			//left
+			else if(event.keyCode == 37){
+				this.snakeDirection(2);
+			}
+			//up
+			else if(event.keyCode == 38){
+				this.snakeDirection(3);
+			}
+		},
+		// Bind keydown event to windows
 		componentWillMount() {
-			//console.error("componentWillMount");
-	    window.addEventListener('keydown', this.handleKeyDown);
-	  },
-	  componentWillUnmount() {
-	    window.removeEventListener('keydown', this.handleKeyDown);
-	  },	
-    updateStates(key, value){
-    	let controls = this.state.controls;
-    	controls[key] = value;
-    	this.setState({"controls": controls});    	
-    },
-    createItem(){
-    	let col = this.state.controls.col;
-    	let row = this.state.controls.row;
-    	let snake = this.state.controls.snake;
-      let emptySpace = [];
+			window.addEventListener('keydown', this.handleKeyDown);
+		},
+		componentWillUnmount() {
+			window.removeEventListener('keydown', this.handleKeyDown);
+		},	
 
-    	let index = -1;
+		// A general update State function
+		updateStates(key, value){
+			let controls = this.state.controls;
+			controls[key] = value;
+			this.setState({"controls": controls});    	
+		},
+
+		// Check empty space in the table (anything but the snake is consider empty), 
+		// randomily generate a position in empty space and save it as the item
+		createItem(){
+			let col 	= this.state.controls.col;
+			let row 	= this.state.controls.row;
+			let snake = this.state.controls.snake;
+			let emptySpace = [];
+
+			let index = -1;
 
 			for (let i=0; i < row; i++) {							
 				for (let j=0; j < col; j++) {
@@ -182,125 +189,64 @@ var snake = function () {
 						emptySpace.push(index);
 					}				  
 				}	
-			  
+				
 			}	
-			//console.error(emptySpace)
+			// randomily generate a item's position
 			snake.item = Math.floor(Math.random() * (emptySpace.length));			
 			this.updateStates("snake", snake);
+		},
 
-  	},
-    snakeDirection(direction){ 
-    	let curr_direction = this.state.controls.direction;
-    	if(curr_direction !== direction && Math.abs(direction - curr_direction) % 2 === 1 ){
-    		this.updateStates("directionBuff", direction);
-    	}  	
-    },
-    lose(){ 
+		// Check if a new direction is valid to move.
+		snakeDirection(direction){ 
+			let curr_direction = this.state.controls.direction;
+			if(curr_direction !== direction && Math.abs(direction - curr_direction) % 2 === 1 ){
+				this.updateStates("directionBuff", direction);
+			}  	
+		},
+
+		// handle the lose condition
+		lose(){ 
 			clearInterval(this.state.controls.intervalId);
-    	this.updateStates("pause", true);
-    	this.updateStates("lose", true);
-    	let bgMusic = this.props.audios.bgMusic;
-    	let lose = this.props.audios.lose;
-    	bgMusic.pause();
-    	bgMusic.currentTime = 0;
-    	lose.play();
-    },
-    win(){ 
+			this.updateStates("pause", true);
+			this.updateStates("lose", true);
+			let bgMusic = this.props.audios.bgMusic;
+			let lose = this.props.audios.lose;
+			bgMusic.pause();
+			bgMusic.currentTime = 0;
+			lose.play();
+		},
+		// handle the win condition
+		win(){ 
 			clearInterval(this.state.controls.intervalId);
-    	this.updateStates("pause", true);
-    	this.updateStates("win", true);
-    	let bgMusic = this.props.audios.bgMusic;
-    	let win = this.props.audios.win;
-    	bgMusic.pause();
-    	bgMusic.currentTime = 0;
-    	win.play();
-    },
-    checker(snake){ 
-    	let col = this.state.controls.col;
-    	let row = this.state.controls.row;
-    	if(snake.col >= col || snake.row >= row || snake.col < 0 || snake.row < 0 ){
-    		return 0;
-    	}
-    	if(snake.head === snake.item ){
-    		let eatItem = this.props.audios.eatItem;
-    		eatItem.currentTime = 0;
-    		eatItem.play();
-    		return 2;
-    	}
+			this.updateStates("pause", true);
+			this.updateStates("win", true);
+			let bgMusic = this.props.audios.bgMusic;
+			let win = this.props.audios.win;
+			bgMusic.pause();
+			bgMusic.currentTime = 0;
+			win.play();
+		},
 
-    	return 1;    	
-    },
-    snakeMoving(){   
-    	let direction = this.state.controls.directionBuff;
-    	this.updateStates("direction", direction);
+		// Check if snake has move to a bad spot (Snake body or wall)
+		spotChecker(snake){ 
+			let col = this.state.controls.col;
+			let row = this.state.controls.row;
 
-    	let snake = this.state.controls.snake;
-	    let col = this.state.controls.col;
-	    let row = this.state.controls.row;
-	    let gameScore = this.state.controls.gameScore;
-	  	
-    	if(direction === 0){
-    		snake.head = snake.head + 1;
-    		snake.col++;
-
-    	}else if(direction === 1){
-    		snake.head = snake.head + col;  
-    		snake.row++; 	
-
-    	}else if(direction === 2){
-    		snake.head = snake.head - 1;
-    		snake.col--;
-
-    	}else if(direction === 3){
-    		snake.head = snake.head - col;
-    		snake.row--;
-    	}
-
-    	if(snake.body[snake.head] === 1){
-    		this.lose();
-    	}
-    	snake.queue.push(snake.head)
-    	snake.body[snake.head] = 1;
-    	let tail = snake.queue[0];
-    	let result = this.checker(snake);
-    	if(result === 0){
-    		this.lose();
-    	}else if(result === 1){
-	    	snake.queue.shift();
-	    	snake.body[tail] = 0;  
-	    	this.updateStates("snake", snake);
-
-    	}else{
-	      let emptySpace = [];
-
-	    	let index = -1;
-	    	gameScore+=10;	    	
-	    	this.updateStates("gameScore", gameScore);
-
-				for (let i=0; i < row; i++) {							
-					for (let j=0; j < col; j++) {
-						index++;					
-						if (snake.body && snake.body[index] !== 1){						
-							emptySpace.push(index);
-						}				  
-					}	
-				  
-				}	
-				
-				if(emptySpace.length <= 2){
-					win();
-				}else{
-					let randIndex = Math.floor(Math.random() * (emptySpace.length));
-					//console.error(randIndex);
-					snake.item = emptySpace[randIndex];
-					this.updateStates("snake", snake);
-				}
-
-    	}
-
-    },
-    rePlayGame(){
-    	this.setState({"controls" : {
+			// Snake hit wall
+			if(snake.col >= col || snake.row >= row || snake.col < 0 || snake.row < 0 ){
+				return 0;
+			}
+			if(snake.head === snake.item ){
+				let eatItem = this.props.audios.eatItem;
+				eatItem.currentTime = 0;
+				eatItem.play();
+				return 2;
+			}
+			return 1;    	
+		},
+		// replay game (after win or lose)
+		rePlayGame(){
+			this.setState({"controls" : {
 				win:false,
 				lose:false,
 				pause: true,
@@ -312,139 +258,231 @@ var snake = function () {
 				directionBuff: 0, 
 				gameScore: 0		    
 			}});
-    	
-  	},
-    startGame:function(){
-    	let audio = this.props.audios.bgMusic;
 			
-    	if(this.state.controls.pause){    		
-    		let intervalId = setInterval(this.snakeMoving, this.state.controls.speed);    		    		
-    		this.updateStates("snake", {
-		    	col: 2,
-		    	row: 0,
-		    	head: 2,
-		    	queue: [1,2],
-		    	body: {
-		    		1 : 1,
-		    		2 : 1
-		    	},
-		    	item: -1,
-		    });
-		    this.createItem();
-		    this.updateStates("intervalId", intervalId);
-		    this.updateStates("pause", false);
-		    audio.play();
-    	}else{
-    		clearInterval(this.state.controls.intervalId);
-    		this.updateStates("pause", true);
-    		audio.pause();
-    		audio.currentTime = 0;
-    	}
-    	
-    },
-    renderWiningPanel(){
-    	let className = this.state.controls.win ? "" : "display-none";
-    	return(    	    		
-			  <div className={"winning-panel " + className} >
-			  	<div className="aligner-item">
-			  		<h1>congratulations!</h1>
-			  	</div>	
-			  	<div className="aligner-item">
-			  		<h1>Your Score : {this.state.controls.gameScore} </h1>
-			  	</div>	
-			  	<div className="aligner-item">
-			  		<button type="button" onClick={() => this.rePlayGame()}>Play Again</button>
-			  	</div>	 				  				  
-			  </div>
-    	);
+		},
+		// start/pase the game
+		startGame:function(){
+			let audio = this.props.audios.bgMusic;
+			
+			if(this.state.controls.pause){    		
+				let intervalId = setInterval(this.snakeMoving, this.state.controls.speed);    		    		
+				this.updateStates("snake", {
+					col: 2,
+					row: 0,
+					head: 2,
+					queue: [1,2],
+					body: {
+						1 : 1,
+						2 : 1
+					},
+					item: -1,
+				});
+				this.createItem();
+				this.updateStates("intervalId", intervalId);
+				this.updateStates("pause", false);
+				audio.play();
+			}else{
+				clearInterval(this.state.controls.intervalId);
+				this.updateStates("pause", true);
+				audio.pause();
+				audio.currentTime = 0;
+			}
+			
+		},
+		// Main logic function handle the movement of snake
+		snakeMoving(){   
+			let direction = this.state.controls.directionBuff;
+			this.updateStates("direction", direction);
 
-    },
-    renderLosingPanel(){
-    	let className = this.state.controls.lose ? "" : "display-none";
-    	return(    		
-			  <div className={"losing-panel " + className} >
-				  <div className="aligner-item">
-			  		<h1>You Lose!</h1>
-			  	</div>	
-			  	<div className="aligner-item">
-			  		<h1>Your Score : {this.state.controls.gameScore} </h1>
-			  	</div>	
-			  	<div className="aligner-item">
-			  		<button type="button" onClick={() => this.rePlayGame()}>Play Again</button>
-			  	</div>			  
-			  </div>
-    	);
+			let snake 		= this.state.controls.snake;
+			let col 			= this.state.controls.col;
+			let row 			= this.state.controls.row;
+			let gameScore = this.state.controls.gameScore;
+			
+			// update snake's postion based on direction
+			if(direction === 0){
+				snake.head = snake.head + 1;
+				snake.col++;
 
-    },
-    renderGamingPanel(){
-    	return(
-			  <div className="container-wrapper">
-			  	{
-			    <RenderGameControl
-			    	updateStates={this.updateStates}
-			    	startGame={this.startGame}
-			    	controls={this.state.controls}
-			    	captions={this.props.captions}/>
-			    }
-			    {
-			    <RenderSnakeMovingTable 
-			    	controls={this.state.controls}
-			    	updateStates={this.updateStates}/>
-			  	}
-			  </div>
-    	);
+			}else if(direction === 1){
+				snake.head = snake.head + col;  
+				snake.row++; 	
 
-    },
-	  render: function() {
-      return (
-      	<div className="main-container">
-      		{this.renderWiningPanel()}
-      		{this.renderLosingPanel()}
-      		{this.renderGamingPanel()}
-			  </div>
-      );
-    }
+			}else if(direction === 2){
+				snake.head = snake.head - 1;
+				snake.col--;
+
+			}else if(direction === 3){
+				snake.head = snake.head - col;
+				snake.row--;
+			}
+
+			// If snake bit its body, return losing conditon
+			if(snake.body[snake.head] === 1){
+				this.lose();
+			}
+
+			// update snake obj
+			snake.queue.push(snake.head)
+			snake.body[snake.head] = 1;
+			let tail = snake.queue[0];
+			let result = this.spotChecker(snake);
+
+			// if snake hit wall
+			if(result === 0){
+				this.lose();
+
+			// If snake move to an empty spot
+			}else if(result === 1){
+				snake.queue.shift();
+				snake.body[tail] = 0;  
+				this.updateStates("snake", snake);
+
+			// if snake eat an item
+			}else{
+				let emptySpace = [];
+				let index = -1;
+				gameScore+=10;	    	
+				this.updateStates("gameScore", gameScore);
+
+				for (let i=0; i < row; i++) {							
+					for (let j=0; j < col; j++) {
+						index++;					
+						if (snake.body && snake.body[index] !== 1){						
+							emptySpace.push(index);
+						}				  
+					}					
+				}	
+				
+				// wining condition
+				if(emptySpace.length <= 2){
+					win();
+
+				}else{
+					let randIndex = Math.floor(Math.random() * (emptySpace.length));
+					//console.error(randIndex);
+					snake.item = emptySpace[randIndex];
+					this.updateStates("snake", snake);
+				}
+
+			}
+
+		},
+		// render a display panel when gamer win
+		renderWiningPanel(){
+			let className = this.state.controls.win ? "" : "display-none";
+			return(    	    		
+				<div className={"winning-panel " + className} >
+					<div className="aligner-item">
+						<h1>congratulations!</h1>
+					</div>	
+					<div className="aligner-item">
+						<h1>Your Score : {this.state.controls.gameScore} </h1>
+					</div>	
+					<div className="aligner-item">
+						<button type="button" onClick={() => this.rePlayGame()}>Play Again</button>
+					</div>	 				  				  
+				</div>
+			);
+
+		},
+		// render a display panel when gamer lose
+		renderLosingPanel(){
+			let className = this.state.controls.lose ? "" : "display-none";
+			return(    		
+				<div className={"losing-panel " + className} >
+					<div className="aligner-item">
+						<h1>You Lose!</h1>
+					</div>	
+					<div className="aligner-item">
+						<h1>Your Score : {this.state.controls.gameScore} </h1>
+					</div>	
+					<div className="aligner-item">
+						<button type="button" onClick={() => this.rePlayGame()}>Play Again</button>
+					</div>			  
+				</div>
+			);
+
+		},
+		// render gaming info panel
+		renderGamingPanel(){
+			return(
+				<div className="container-wrapper">
+					{
+					<RenderGameControl
+						updateStates={this.updateStates}
+						startGame={this.startGame}
+						controls={this.state.controls}
+						captions={this.props.captions}/>
+					}
+					{
+					<RenderSnakeMovingTable 
+						controls={this.state.controls}
+						updateStates={this.updateStates}/>
+					}
+				</div>
+			);
+
+		},
+		render: function() {
+			return (
+				<div className="main-container">
+					{this.renderWiningPanel()}
+					{this.renderLosingPanel()}
+					{this.renderGamingPanel()}
+				</div>
+			);
+		}
 	});
 
 	var destination = document.querySelector("#root");
 
+	// Main Config Object
 	var config = {
+
+		// defined all Captions Displayed on Page 
 		captions : {
 			ProjectName: "React Snake",
 			Author:   "Nan Sun",
 			Version:  "1.0.0",
 		},
+
+		// Control Parameter on how the game suppose to behave
 		controls : {
-			win:false,
-			lose:false,
-			pause: true,
-			intervalId: 0,
-			col:12,
-			row:17,
-			speed: 200,
-			direction: 0,	
-			directionBuff: 0, 
-			gameScore: 0,
-	    snake:{}
+			win:false,					// Wining State (T or F)
+			lose:false,					// Losing State (T or F)
+			pause: true,				// Pause State (T or F)
+			intervalId: 0,			// Default setTimeOut Interval ID 
+			col:12,							// Game Table Column size
+			row:17,							// Game Table Row size
+			speed: 200,					// Default Delay Interval (in ms) to Control Snake Moving, Lower mean faster
+			direction: 0,				// Direction Snake is moving (0 => left, 1 => down, 2 => right, 3 => up)
+			directionBuff: 0,		// a temp Buff that store Direction
+			gameScore: 0,				// Store Score of Game
+			snake:{}						// Snake Obj, Use to record position of snake while game is continue
 		},
+
+		// Audios files
 		audios : {
-			bgMusic : new Audio('files/bgMusic.mp3'),
-			eatItem : new Audio('files/eatItem.mp3'),
-			win  : new Audio('files/win.mp3'),
-			lose : new Audio('files/lose.mp3')
+			bgMusic : new Audio('files/bgMusic.mp3'),	// Back Ground Music
+			eatItem : new Audio('files/eatItem.mp3'),	// Sound Effect when eat item
+			win  : new Audio('files/win.mp3'),				// Music when player win
+			lose : new Audio('files/lose.mp3')				// Music when player lose
 		}
 	};
+
+	// Add loop event on background music, so music will continue play until user pasue/win/lose
 	config.audios.bgMusic.addEventListener('ended', function() {
-    this.currentTime = 0;
-    this.play();
+		this.currentTime = 0;
+		this.play();
 	}, false);	
 
-
+	//Main render function
 	ReactDOM.render(
-	  <div>
-	    <ReactSnakeGame captions={config.captions} controls={config.controls} audios={config.audios}/>
-	  </div>,
-	  destination
+		<div>
+			<ReactSnakeGame captions={config.captions} controls={config.controls} audios={config.audios}/>
+		</div>,
+		destination
 	);  
 }
 

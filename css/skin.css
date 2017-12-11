@@ -1,120 +1,114 @@
-/* Basic skin.css file                                                         */
+/* Basic skin.css file for React Snake                                         */
 /* =========================================================================== */
 
-/*                                                                             */
-/* ----------------------------------------------------------------------------*/
 
 @font-face {
-  font-family: arcade;
-  src: url(ARCADE.TTF);
+	font-family: arcade;
+	src: url(ARCADE.TTF);
 }
 html, body{
 
 }
 body{  
-  font-family:arcade;  
-  background-color: #739900;  
-  text-decoration: none;
+	font-family:arcade;  
+	background-color: #739900;  
+	text-decoration: none;
 }
-
+#root{
+	padding: 25px;
+}
 button {  
-  outline: none;
-  background-color: #739900; /* Green */
-  border: 5px dashed #003300;
-  color: black;
-  font-family:arcade;  
-  padding-top: 15px;
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  font-size: 38px;
+	outline: none;
+	background-color: #739900; /* Green */
+	border: 5px dashed #003300;
+	color: black;
+	font-family:arcade;  
+	padding-top: 15px;
+	text-align: center;
+	text-decoration: none;
+	display: block;
+	font-size: 38px;
 }
 .button-full {  
-  width:100%;
+	width:100%;
 }
-
 button:hover {
-  background-color: #004d00; /* Green */
-  border: 5px dashed #008000;
-  color: #00b300;
-}
-
-#root{
-  padding: 25px;
+	background-color: #004d00; /* Green */
+	border: 5px dashed #008000;
+	color: #00b300;
 }
 .main-container{
-  width:100%;
+	width:100%;
 }
 .winning-panel{
-  width:100%;  
-  height:100%;
-  position: absolute; top: 0; left: 0; 
-  background-color: rgba(0, 77, 0, 0.8); 
-  z-index: 100;
-  padding-top: 60px;
+	width:100%;  
+	height:100%;
+	position: absolute; top: 0; left: 0; 
+	background-color: rgba(0, 77, 0, 0.8); 
+	z-index: 100;
+	padding-top: 60px;
 }
 .winning-panel div{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
-
 .aligner-item h1{
-  font-size: 60px;
-  text-align: center;
+	font-size: 60px;
+	text-align: center;
 }
 .display-none{
-  display:none;
+	display:none;
 }
 .losing-panel{
-  width:100%;
-  height:100%;
-  position: absolute; top: 0; left: 0; 
-  background-color: rgba(0, 77, 0, 0.8); 
-  z-index: 100;
+	width:100%;
+	height:100%;
+	position: absolute; top: 0; left: 0; 
+	background-color: rgba(0, 77, 0, 0.8); 
+	z-index: 100;
 }
 .losing-panel div{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .container-wrapper{
-  display: table;
-  margin: 0 auto;
+	display: table;
+	margin: 0 auto;
 }
 .container-wrapper:after{
-  content:"";
-  display: block;
-  clear:both;
+	content:"";
+	display: block;
+	clear:both;
 }
 .snake-moving-table-container{
-  border: 25px double black;
-  border-radius: 10px;
-  margin-top: 40px;
-  float:left;
+	border: 25px double black;
+	border-radius: 10px;
+	margin-top: 40px;
+	float:left;
 }
 .game-control-container{
-  padding:10px;
-  float:left;
+	padding:10px;
+	float:left;
 }
 
 .game-control-container h1{
-  font-size: 60px;
-  margin-top: 25px;
-  margin-bottom: -20px;
-  padding-bottom: 0px;
+	font-size: 60px;
+	margin-top: 25px;
+	margin-bottom: -20px;
+	padding-bottom: 0px;
 }
 .game-control-container h3{  
-  margin-top: 10px;
-  margin-bottom: 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 .snake-moving-table{    
-    border-spacing: 1px;
-    border-collapse:separate; 
-    padding:0px;
-    background:  #004d00; /* For browsers that do not support gradients */
-    background: linear-gradient(#004d00, #003300); /* Standard syntax */
+		border-spacing: 1px;
+		border-collapse:separate; 
+		padding:0px;
+		background:  #004d00; 
+		background: linear-gradient(#004d00, #003300); 
 }
 
 .snake-moving-table tbody tr td div{
@@ -132,82 +126,73 @@ button:hover {
 
 .items{
 	background-color: #00b300;
-  border-radius: 50%;
+	border-radius: 50%;
 }
 
 .display-panel{
-  margin-top: 25px;
-  padding-left: 25px;
-  padding-right: 25px;
-  border: 5px dashed #003300;
+	margin-top: 25px;
+	padding-left: 25px;
+	padding-right: 25px;
+	border: 5px dashed #003300;
 }
 
 .display-panel .display-panel-header{
-  border-bottom: 5px dashed #003300;
-  margin-left: -25px;
-  margin-right: -25px;
-  padding-top: 15px;
-  display: block;
+	border-bottom: 5px dashed #003300;
+	margin-left: -25px;
+	margin-right: -25px;
+	padding-top: 15px;
+	display: block;
 }
 
 .display-panel .display-panel-header{
-  font-size: 38px;
-  text-align: center;
-  text-decoration: none;
-  font-family: arcade;
-  color: black;
-  margin-bottom: 25px;
+	font-size: 38px;
+	text-align: center;
+	text-decoration: none;
+	font-family: arcade;
+	color: black;
+	margin-bottom: 25px;
 }
 
 .game-score-container{
-  font-size: 68px;
-  text-align: center;
-  text-decoration: none;
-  font-family: arcade;
-  color: black;
+	font-size: 68px;
+	text-align: center;
+	text-decoration: none;
+	font-family: arcade;
+	color: black;
 }
 
-/* The container */
 .radio-btn-container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 36px;
-    user-select: none;
+		display: block;
+		position: relative;
+		padding-left: 35px;
+		margin-bottom: 12px;
+		cursor: pointer;
+		font-size: 36px;
+		user-select: none;
 }
 
-/* Hide the browser's default radio button */
 .radio-btn-container input {
-    position: absolute;
-    opacity: 0;
+		position: absolute;
+		opacity: 0;
 }
 
-/* Create a custom radio button */
 .radio-btn-checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 15px;
-    width: 15px;
-    background-color: #739900;
-    border: 4px dashed #003300;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 15px;
+		width: 15px;
+		background-color: #739900;
+		border: 4px dashed #003300;
 }
-
-/* add background color when radio button is checked */
 .radio-btn-container input:checked ~ .radio-btn-checkmark {
-    background-color: #004d00;
+		background-color: #004d00;
 }
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
 .radio-btn-checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
+		content: "";
+		position: absolute;
+		display: none;
 }
-
-/* Show the indicator (dot/circle) when checked */
 .radio-btn-container input:checked ~ .radio-btn-checkmark:after {
-    display: block;
+		display: block;
 }
