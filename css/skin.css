@@ -15,11 +15,11 @@ body{
 	text-decoration: none;
 }
 #root{
-	padding: 25px;
+	padding: 15px;
 }
 button {  
 	outline: none;
-	background-color: #739900; /* Green */
+	background-color: #739900; 
 	border: 5px dashed #003300;
 	color: black;
 	font-family:arcade;  
@@ -27,13 +27,13 @@ button {
 	text-align: center;
 	text-decoration: none;
 	display: block;
-	font-size: 38px;
+	font-size: 28px;
 }
 .button-full {  
 	width:100%;
 }
 button:hover {
-	background-color: #004d00; /* Green */
+	background-color: #004d00; 
 	border: 5px dashed #008000;
 	color: #00b300;
 }
@@ -54,7 +54,7 @@ button:hover {
 	justify-content: center;
 }
 .aligner-item h1{
-	font-size: 60px;
+	font-size: 40px;
 	text-align: center;
 }
 .display-none{
@@ -84,8 +84,13 @@ button:hover {
 .snake-moving-table-container{
 	border: 25px double black;
 	border-radius: 10px;
-	margin-top: 40px;
+	margin-top: 85px;
 	float:left;
+}
+@media (max-width: 800px) {
+	.snake-moving-table-container{
+		margin-top: 15px;
+	}
 }
 .game-control-container{
 	padding:10px;
@@ -93,7 +98,7 @@ button:hover {
 }
 
 .game-control-container h1{
-	font-size: 60px;
+	font-size: 40px;
 	margin-top: 25px;
 	margin-bottom: -20px;
 	padding-bottom: 0px;
@@ -104,17 +109,17 @@ button:hover {
 }
 
 .snake-moving-table{    
-		border-spacing: 1px;
-		border-collapse:separate; 
-		padding:0px;
-		background:  #004d00; 
-		background: linear-gradient(#004d00, #003300); 
+	border-spacing: 1px;
+	border-collapse:separate; 
+	padding:0px;
+	background:  #004d00; 
+	background: linear-gradient(#004d00, #003300); 
 }
 
 .snake-moving-table tbody tr td div{
 	display: block;
-	width:30px;
-	height:30px;
+	width:20px;
+	height:20px;
 	margin: 0px;
 	border: 1px dashed #008000;
 }
@@ -145,7 +150,7 @@ button:hover {
 }
 
 .display-panel .display-panel-header{
-	font-size: 38px;
+	font-size: 28px;
 	text-align: center;
 	text-decoration: none;
 	font-family: arcade;
@@ -154,7 +159,7 @@ button:hover {
 }
 
 .game-score-container{
-	font-size: 68px;
+	font-size: 48px;
 	text-align: center;
 	text-decoration: none;
 	font-family: arcade;
@@ -167,7 +172,7 @@ button:hover {
 		padding-left: 35px;
 		margin-bottom: 12px;
 		cursor: pointer;
-		font-size: 36px;
+		font-size: 28px;
 		user-select: none;
 }
 
