@@ -29,7 +29,6 @@ var snake = function () {
 	// Render Function For game table
 	var RenderSnakeMovingTable = React.createClass({
 		render: function() {
-
 			let row 	= this.props.controls.row || 10;
 			let col 	= this.props.controls.col || 20;
 			let snake = this.props.controls.snake || {};
@@ -157,12 +156,44 @@ var snake = function () {
 				this.snakeDirection(3);
 			}
 		},
+		handleTouchDown(event){
+			this.updateStates("touchPosition", {"clientX" : event.clientX, "clientY" : event.clientY});
+		},
+		handleTouchUp(event){
+			let clientX = this.state.controls.touchPosition.clientX;
+			let clientY = this.state.controls.touchPosition.clientY;
+			let xMove = event.clientX - clientX;
+			let yMove = event.clientY - clientY;
+
+			if(Math.abs(xMove) > Math.abs(yMove)){
+				if(xMove > 0){
+					console.error(0);
+					this.snakeDirection(0);
+				}else{
+				console.error(2);
+					this.snakeDirection(2);
+				}	 
+			}else{
+				if(yMove > 0){
+				console.error(1);
+					this.snakeDirection(1);
+				}else{
+				console.error(3);
+					this.snakeDirection(3);
+				}	 
+			}
+
+		},
 		// Bind keydown event to windows
 		componentWillMount() {
 			window.addEventListener('keydown', this.handleKeyDown);
+			window.addEventListener('mousedown', this.handleTouchDown);
+			window.addEventListener('mouseup', this.handleTouchUp);
 		},
 		componentWillUnmount() {
 			window.removeEventListener('keydown', this.handleKeyDown);
+			window.removeEventListener('mousedown', this.handleTouchDown);
+			window.removeEventListener('mouseup', this.handleTouchDown);
 		},	
 
 		// A general update State function
@@ -280,6 +311,7 @@ var snake = function () {
 				this.createItem();
 				this.updateStates("intervalId", intervalId);
 				this.updateStates("pause", false);
+				this.updateStates("direction", 0);
 				audio.play();
 			}else{
 				clearInterval(this.state.controls.intervalId);
