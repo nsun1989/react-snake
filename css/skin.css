@@ -87,11 +87,6 @@ button:hover {
 	margin-top: 85px;
 	float:left;
 }
-@media (max-width: 800px) {
-	.snake-moving-table-container{
-		margin-top: 15px;
-	}
-}
 .game-control-container{
 	padding:10px;
 	float:left;
@@ -118,8 +113,8 @@ button:hover {
 
 .snake-moving-table tbody tr td div{
 	display: block;
-	width:20px;
-	height:20px;
+	width:30px;
+	height:30px;
 	margin: 0px;
 	border: 1px dashed #008000;
 }
@@ -200,4 +195,31 @@ button:hover {
 }
 .radio-btn-container input:checked ~ .radio-btn-checkmark:after {
 		display: block;
+}
+
+
+@media (max-width: 560px) {
+	.snake-moving-table-container{
+		margin-top: 15px;
+	}
+	.sm-size-display-none{
+		display:none;
+	}
+}
+
+@media (max-width: 360px) {
+
+	.game-control-container h1{
+		font-size: 30px;
+		margin-top: 0px;
+		margin-bottom: -20px;
+		padding-bottom: 0px;
+	}
+	.radio-btn-container {
+		font-size: 25px;
+	}
+	.snake-moving-table tbody tr td div{
+		width:24px;
+		height:24px;
+	}
 }

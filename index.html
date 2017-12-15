@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8"/>
+	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1"/>
 	<title>React Snake</title>
 	<link rel="stylesheet" type="text/css" href="./css/skin.css">
 </head>
@@ -52,10 +52,12 @@ var snake = function () {
 					}				  
 				}				
 				table.push(<tr key={"row_" + i}>{tr}</tr>);
-			}			
+			}
+
+			let className = this.props.controls.pause ? "sm-size-display-none" : "" ;
 
 			return (
-				<div className="snake-moving-table-container">
+				<div className={"snake-moving-table-container " + className}>
 					<table className="snake-moving-table">   
 						<tbody>     	
 							{table}
@@ -101,8 +103,9 @@ var snake = function () {
 
 		render: function() {
 			let btnText = this.props.controls.pause ? "Start Game" : "Stop Game" ;
+			let className = this.props.controls.pause ? "" : "sm-size-display-none" ;
 			return (
-				<div className="game-control-container"> 
+				<div className={"game-control-container " + className}> 
 					{this.RenderGameControlHeader()}
 					<button type="button" className="button-full" onClick={()=> this.props.startGame()}>{btnText}</button>
 
@@ -187,8 +190,8 @@ var snake = function () {
 		// Bind keydown event to windows
 		componentWillMount() {
 			window.addEventListener('keydown', this.handleKeyDown);
-			window.addEventListener('mousedown', this.handleTouchDown);
-			window.addEventListener('mouseup', this.handleTouchUp);
+			//window.addEventListener('mousedown', this.handleTouchDown);
+			//window.addEventListener('mouseup', this.handleTouchUp);
 		},
 		componentWillUnmount() {
 			window.removeEventListener('keydown', this.handleKeyDown);
@@ -282,7 +285,7 @@ var snake = function () {
 				lose:false,
 				pause: true,
 				intervalId: 0,
-				col:12,
+				col:10,
 				row:18,
 				speed: 200,
 				direction: 0,	
@@ -485,8 +488,8 @@ var snake = function () {
 			lose:false,					// Losing State (T or F)
 			pause: true,				// Pause State (T or F)
 			intervalId: 0,			// Default setTimeOut Interval ID 
-			col:12,							// Game Table Column size
-			row:18,							// Game Table Row size
+			col:9,							// Game Table Column size
+			row:16,							// Game Table Row size
 			speed: 200,					// Default Delay Interval (in ms) to Control Snake Moving, Lower mean faster
 			direction: 0,				// Direction Snake is moving (0 => left, 1 => down, 2 => right, 3 => up)
 			directionBuff: 0,		// a temp Buff that store Direction
