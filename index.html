@@ -17,18 +17,18 @@
 var snake = function () {
 
 	// Render function for Table Cell
-	var RenderTableCell = React.createClass({
-		render: function() {
+	class RenderTableCell extends React.Component {
+		render() {
 			return (
 				<div className={this.props.className} >	
 				</div>
 			);
 		}
-	});
+	};
 
 	// Render Function For game table
-	var RenderSnakeMovingTable = React.createClass({
-		render: function() {
+	class RenderSnakeMovingTable extends React.Component{
+		render() {
 			let row 	= this.props.controls.row || 10;
 			let col 	= this.props.controls.col || 20;
 			let snake = this.props.controls.snake || {};
@@ -66,10 +66,10 @@ var snake = function () {
 				</div>
 			);
 		}
-	});
+	};
 
 	// Render Game Control Panel
-	var RenderGameControl = React.createClass({
+	class RenderGameControl extends React.Component{
 
 		// Render Header (Game Name, Version, etc)
 		RenderGameControlHeader(){
@@ -79,7 +79,7 @@ var snake = function () {
 					<h3>Verson : {this.props.captions.Version}</h3>
 				</div>
 			);
-		},
+		}
 
 		// Render a panel to display Game Score
 		RenderGameScore(){
@@ -89,7 +89,7 @@ var snake = function () {
 					{score}
 				</div>
 			);
-		},
+		}
 
 		// Render Radio Button to control game speed
 		renderRadioBtn(label,speed,defaultChecked){
@@ -99,9 +99,9 @@ var snake = function () {
 					<span className="radio-btn-checkmark"></span>
 				</label>
 			);
-		},
+		}
 
-		render: function() {
+		render() {
 			let btnText = this.props.controls.pause ? "Start Game" : "Stop Game" ;
 			let className = this.props.controls.pause ? "" : "sm-size-display-none" ;
 			return (
@@ -131,7 +131,7 @@ var snake = function () {
 				</div>
 			);
 		}
-	});
+	}
 
 	// Main Logic Function, ReactSnakeGame 
 	var ReactSnakeGame = React.createClass({
@@ -511,14 +511,12 @@ var snake = function () {
 		this.currentTime = 0;
 		this.play();
 	}, false);	
-
-	//Main render function
-	ReactDOM.render(
+	const main = (
 		<div>
 			<ReactSnakeGame captions={config.captions} controls={config.controls} audios={config.audios}/>
-		</div>,
-		destination
-	);  
+		</div>);
+	//Main render function
+	ReactDOM.render(main, destination);  
 }
 
 snake();
